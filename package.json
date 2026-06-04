@@ -1,0 +1,26 @@
+{
+  "name": "kitforge",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Personal reusable kit — design tokens, UI widgets, and auth wrappers.",
+  "type": "module",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo run build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.9",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2"
+  },
+  "packageManager": "pnpm@11.5.1",
+  "engines": {
+    "node": ">=18"
+  }
+}
