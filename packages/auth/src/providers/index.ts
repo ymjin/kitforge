@@ -10,3 +10,5 @@
  */
 
 export { Google } from "./google.js";
+export { Kakao } from "./kakao.js";
+export { Naver } from "./naver.js";
