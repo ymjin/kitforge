@@ -18,6 +18,11 @@
       "types": "./dist/providers/index.d.ts",
       "import": "./dist/providers/index.js",
       "require": "./dist/providers/index.cjs"
+    },
+    "./node": {
+      "types": "./dist/node/index.d.ts",
+      "import": "./dist/node/index.js",
+      "require": "./dist/node/index.cjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -28,6 +33,9 @@
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "jose": "^5.10.0"
   },
   "devDependencies": {
     "tsup": "^8.3.5",
