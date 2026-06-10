@@ -23,6 +23,11 @@
       "types": "./dist/node/index.d.ts",
       "import": "./dist/node/index.js",
       "require": "./dist/node/index.cjs"
+    },
+    "./next": {
+      "types": "./dist/next/index.d.ts",
+      "import": "./dist/next/index.js",
+      "require": "./dist/next/index.cjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -36,6 +41,12 @@
   },
   "dependencies": {
     "jose": "^5.10.0"
+  },
+  "peerDependencies": {
+    "next": ">=14.0.0"
+  },
+  "peerDependenciesMeta": {
+    "next": { "optional": true }
   },
   "devDependencies": {
     "tsup": "^8.3.5",
