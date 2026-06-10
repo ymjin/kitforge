@@ -23,6 +23,7 @@
  * Phase 2: Textarea, RadioGroup, Combobox, Slider, NumberField (form);
  *          Popover, Tooltip, Drawer, AlertDialog, Toast (overlay);
  *          FileUpload, Avatar (integration); Badge, Card, Spinner, Skeleton (display).
+ * Phase 3: Tabs, Accordion, DropdownMenu, Pagination, Table (navigation & data).
  */
 
 // ── Phase 1 ─────────────────────────────────────────────────────────────────
@@ -98,6 +99,29 @@ export type { SpinnerProps, SpinnerSize } from "./components/Spinner.js";
 
 export { Skeleton } from "./components/Skeleton.js";
 export type { SkeletonProps } from "./components/Skeleton.js";
+
+// ── Phase 3: navigation & data ────────────────────────────────────────────────
+export { Tabs, TabList, Tab, TabPanel } from "./components/Tabs.js";
+export type { TabsProps, TabListProps, TabProps, TabPanelProps } from "./components/Tabs.js";
+
+export { Accordion, AccordionItem } from "./components/Accordion.js";
+export type { AccordionProps, AccordionItemProps } from "./components/Accordion.js";
+
+export { DropdownMenu, MenuItem, MenuSeparator } from "./components/Menu.js";
+export type { DropdownMenuProps, MenuItemProps } from "./components/Menu.js";
+
+export { Table, TableHeader, TableBody, Column, Row, Cell } from "./components/Table.js";
+export type {
+  TableProps,
+  TableHeaderProps,
+  TableBodyProps,
+  ColumnProps,
+  RowProps,
+  CellProps,
+} from "./components/Table.js";
+
+export { Pagination } from "./components/Pagination.js";
+export type { PaginationProps } from "./components/Pagination.js";
 
 export { cx } from "./utils/cx.js";
 
