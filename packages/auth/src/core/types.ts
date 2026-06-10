@@ -43,10 +43,20 @@ export interface OAuthProvider {
   name: string;
   clientId: string;
   /**
-   * Confidential-client secret. Optional: omitted for public SPA clients that
-   * rely on PKCE. NEVER hard-coded — injected by the consuming app.
+   * Static confidential-client secret. Optional: omitted for public SPA
+   * clients that rely on PKCE. NEVER hard-coded — injected by the consuming
+   * app. For providers that require a dynamically-signed secret (Apple),
+   * use `getClientSecret` instead.
    */
   clientSecret?: string;
+  /**
+   * Dynamic client-secret factory. Called fresh before every token request.
+   * Takes precedence over `clientSecret` when both are present.
+   *
+   * Used by Apple Sign In, whose `client_secret` is a short-lived JWT signed
+   * with the app's ES256 private key.
+   */
+  getClientSecret?: () => Promise<string>;
   scopes: string[];
   /** Whether to use PKCE (RFC 7636). Required for public clients. */
   usePKCE: boolean;
@@ -59,8 +69,18 @@ export interface OAuthProvider {
     url: string;
   };
   userinfo: {
-    url: string;
-    /** Maps the provider's raw userinfo payload to a NormalizedProfile. */
+    /**
+     * REST endpoint to fetch the user profile. Omit for providers (Apple)
+     * that embed profile data in the `id_token` — set `fromIdToken: true`
+     * instead.
+     */
+    url?: string;
+    /**
+     * When true, `getUserInfo` decodes the `id_token` JWT payload instead of
+     * making an HTTP request. The decoded payload is passed to `map`.
+     */
+    fromIdToken?: boolean;
+    /** Maps the provider's raw payload to a NormalizedProfile. */
     map: (raw: Record<string, unknown>, provider: OAuthProvider) => NormalizedProfile;
   };
 }

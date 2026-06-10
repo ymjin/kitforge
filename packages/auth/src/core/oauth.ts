@@ -1,10 +1,10 @@
 /**
  * The provider-agnostic OAuth 2.0 Authorization Code flow (with optional PKCE).
  *
- * Every provider (Google today; Apple/Kakao/Naver next) plugs into these four
- * functions by supplying only endpoint URLs and a profile mapper. The flow
- * itself — building the authorize URL, exchanging the code, refreshing, and
- * fetching userinfo — lives here once.
+ * Every provider (Google, Kakao, Naver, Apple) plugs into these four functions
+ * by supplying only endpoint URLs and a profile mapper. The flow itself —
+ * building the authorize URL, exchanging the code, refreshing, and fetching
+ * userinfo — lives here once.
  */
 
 import { createCodeChallenge, createCodeVerifier, createState } from "./pkce.js";
@@ -44,7 +44,9 @@ export async function createAuthorizationUrl(
   search.set("client_id", provider.clientId);
   search.set("redirect_uri", options.redirectUri);
   search.set("response_type", "code");
-  search.set("scope", provider.scopes.join(" "));
+  if (provider.scopes.length > 0) {
+    search.set("scope", provider.scopes.join(" "));
+  }
   search.set("state", state);
 
   for (const [key, value] of Object.entries(provider.authorization.params ?? {})) {
@@ -82,7 +84,8 @@ export async function exchangeCode(
     redirect_uri: options.redirectUri,
     client_id: provider.clientId,
   });
-  if (provider.clientSecret) body.set("client_secret", provider.clientSecret);
+  const secret = await resolveClientSecret(provider);
+  if (secret) body.set("client_secret", secret);
   if (options.codeVerifier) body.set("code_verifier", options.codeVerifier);
 
   return requestTokens(provider, body);
@@ -102,16 +105,48 @@ export async function refreshTokens(
     refresh_token: options.refreshToken,
     client_id: provider.clientId,
   });
-  if (provider.clientSecret) body.set("client_secret", provider.clientSecret);
+  const secret = await resolveClientSecret(provider);
+  if (secret) body.set("client_secret", secret);
 
   return requestTokens(provider, body);
 }
 
-/** Fetch and normalize the signed-in user's profile. */
+/**
+ * Fetch and normalize the signed-in user's profile.
+ *
+ * - Most providers: GET `userinfo.url` with Bearer token.
+ * - Apple (and any provider with `userinfo.fromIdToken: true`): decodes the
+ *   `id_token` JWT payload instead — no extra HTTP call needed.
+ *
+ * @param tokens  Pass the full token set when `provider.userinfo.fromIdToken`
+ *                is true; otherwise only `accessToken` is used.
+ */
 export async function getUserInfo(
   provider: OAuthProvider,
   accessToken: string,
+  tokens?: OAuthTokens,
 ): Promise<NormalizedProfile> {
+  if (provider.userinfo.fromIdToken) {
+    const idToken = tokens?.idToken;
+    if (!idToken) {
+      throw new OAuthError(
+        `[@kitforge/auth] ${provider.id} requires an id_token to build the profile, ` +
+          `but none was returned from the token exchange. ` +
+          `Ensure the "openid" scope is included.`,
+        0,
+      );
+    }
+    const payload = decodeJwtPayload(idToken);
+    return provider.userinfo.map(payload, provider);
+  }
+
+  if (!provider.userinfo.url) {
+    throw new OAuthError(
+      `[@kitforge/auth] ${provider.id} has no userinfo.url and fromIdToken is not set.`,
+      0,
+    );
+  }
+
   const res = await fetch(provider.userinfo.url, {
     headers: { authorization: `Bearer ${accessToken}`, accept: "application/json" },
   });
@@ -136,6 +171,20 @@ export class OAuthError extends Error {
     super(message);
     this.name = "OAuthError";
   }
+}
+
+// ---------------------------------------------------------------------------
+// Internals
+// ---------------------------------------------------------------------------
+
+/**
+ * Resolves the client secret for a token request.
+ * `getClientSecret` (dynamic, e.g. Apple JWT) takes precedence over the static
+ * `clientSecret` string.
+ */
+async function resolveClientSecret(provider: OAuthProvider): Promise<string | undefined> {
+  if (provider.getClientSecret) return provider.getClientSecret();
+  return provider.clientSecret;
 }
 
 async function requestTokens(
@@ -167,10 +216,24 @@ async function requestTokens(
     refreshToken: typeof json["refresh_token"] === "string" ? json["refresh_token"] : undefined,
     idToken: typeof json["id_token"] === "string" ? json["id_token"] : undefined,
     scope: typeof json["scope"] === "string" ? json["scope"] : undefined,
-    // Note: callers needing exact expiry should stamp this themselves; we avoid
-    // Date.now() at module scope to keep the core deterministic and testable.
     expiresAt: expiresIn !== undefined ? Date.now() + expiresIn * 1000 : undefined,
   };
+}
+
+/**
+ * Decode (not verify) a JWT payload. Verification is not needed here because
+ * the token was obtained directly from the provider's token endpoint over TLS.
+ */
+function decodeJwtPayload(jwt: string): Record<string, unknown> {
+  const parts = jwt.split(".");
+  if (parts.length !== 3 || !parts[1]) {
+    throw new Error("[@kitforge/auth] Malformed JWT: expected 3 dot-separated parts.");
+  }
+  // Convert base64url → base64, then decode
+  const base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+  const padded = base64.padEnd(Math.ceil(base64.length / 4) * 4, "=");
+  const json = atob(padded);
+  return JSON.parse(json) as Record<string, unknown>;
 }
 
 async function safeText(res: Response): Promise<string | undefined> {

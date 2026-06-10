@@ -12,3 +12,5 @@
 export { Google } from "./google.js";
 export { Kakao } from "./kakao.js";
 export { Naver } from "./naver.js";
+export { Apple } from "./apple.js";
+export type { AppleOptions } from "./apple.js";
