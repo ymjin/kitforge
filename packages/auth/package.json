@@ -34,6 +34,11 @@
       "import": "./dist/react/index.js",
       "require": "./dist/react/index.cjs"
     },
+    "./native": {
+      "types": "./dist/native/index.d.ts",
+      "import": "./dist/native/index.js",
+      "require": "./dist/native/index.cjs"
+    },
     "./adapters": {
       "types": "./dist/adapters/index.d.ts",
       "import": "./dist/adapters/index.js",
@@ -54,6 +59,8 @@
     "jose": "^5.10.0"
   },
   "peerDependencies": {
+    "expo-auth-session": ">=5.0.0",
+    "expo-secure-store": ">=12.0.0",
     "next": ">=14.0.0",
     "react": ">=18.0.0"
   },
@@ -62,6 +69,12 @@
       "optional": true
     },
     "react": {
+      "optional": true
+    },
+    "expo-auth-session": {
+      "optional": true
+    },
+    "expo-secure-store": {
       "optional": true
     }
   },
