@@ -8,13 +8,35 @@ once; switch providers by swapping one factory.
 | Google Maps | `GoogleMaps({ apiKey })` | Maps JavaScript API key |
 | Naver Maps | `NaverMaps({ ncpKeyId })` | NCP Maps key id |
 
-## Design
+## Web + React Native
+
+The same component code runs on both platforms — the bundler picks the build:
 
 ```
-@kitforge/maps            ← MapProvider / MapController contracts + loadScript
-@kitforge/maps/providers  ← GoogleMaps, NaverMaps factories
-@kitforge/maps/react      ← <Map>, <Marker>, <Polygon>, <Polyline>, useCurrentPosition
+@kitforge/maps            ← shared types + MapController contract + loadScript
+@kitforge/maps/providers  ← web providers: GoogleMaps, NaverMaps
+@kitforge/maps/react      ← web components (JS SDK + DOM)
+@kitforge/maps/native     ← React Native components (react-native-maps)
+@kitforge/maps/ui         ← platform-resolved: web → /react, RN (Metro) → /native
 ```
+
+Import from `@kitforge/maps/ui` and write once:
+
+```tsx
+import { Map, Marker, GoogleMaps } from "@kitforge/maps/ui";
+// web  → Google/Naver JS SDK
+// RN   → react-native-maps (Google/Apple)
+```
+
+| | Web (`/react`) | Native (`/native`) |
+|--|----------------|--------------------|
+| Google | ✅ | ✅ |
+| Apple | — | ✅ (`AppleMaps()`) |
+| Naver | ✅ | ❌ not yet (`NaverMaps()` throws) |
+
+**Native requirements:** `react-native` + `react-native-maps` peers, keys in
+native config (`app.json` / `Info.plist` / `AndroidManifest.xml`), and a
+**dev/EAS build** — `react-native-maps` does not run in Expo Go.
 
 SDKs load on demand via `<script>` (deduped) and are never bundled. Keys are
 public, domain-restricted values that **you** inject — the library never holds

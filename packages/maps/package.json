@@ -23,6 +23,28 @@
       "types": "./dist/react/index.d.ts",
       "import": "./dist/react/index.js",
       "require": "./dist/react/index.cjs"
+    },
+    "./native": {
+      "types": "./dist/native/index.d.ts",
+      "import": "./dist/native/index.js",
+      "require": "./dist/native/index.cjs"
+    },
+    "./ui": {
+      "react-native": {
+        "types": "./dist/ui-native.d.ts",
+        "import": "./dist/ui-native.js",
+        "require": "./dist/ui-native.cjs"
+      },
+      "browser": {
+        "types": "./dist/ui-web.d.ts",
+        "import": "./dist/ui-web.js",
+        "require": "./dist/ui-web.cjs"
+      },
+      "default": {
+        "types": "./dist/ui-web.d.ts",
+        "import": "./dist/ui-web.js",
+        "require": "./dist/ui-web.cjs"
+      }
     }
   },
   "main": "./dist/index.cjs",
@@ -36,13 +58,21 @@
   },
   "peerDependencies": {
     "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react-dom": ">=18.0.0",
+    "react-native": ">=0.72.0",
+    "react-native-maps": ">=1.7.0"
   },
   "peerDependenciesMeta": {
     "react": {
       "optional": true
     },
     "react-dom": {
+      "optional": true
+    },
+    "react-native": {
+      "optional": true
+    },
+    "react-native-maps": {
       "optional": true
     }
   },
