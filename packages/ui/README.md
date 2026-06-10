@@ -33,7 +33,8 @@ tokens, so widgets look identical across every browser and OS.
 
 **Phase 3 — navigation & data**: `Tabs` (+`TabList`/`Tab`/`TabPanel`),
 `Accordion` (+`AccordionItem`), `DropdownMenu` (+`MenuItem`/`MenuSeparator`),
-`Table` (+`TableHeader`/`TableBody`/`Column`/`Row`/`Cell`), `Pagination`
+`Table` (+`TableHeader`/`TableBody`/`Column`/`Row`/`Cell`), `Pagination`,
+`Progress`, `SearchField`
 
 ## Setup
 

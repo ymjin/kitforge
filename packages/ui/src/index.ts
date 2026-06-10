@@ -123,6 +123,12 @@ export type {
 export { Pagination } from "./components/Pagination.js";
 export type { PaginationProps } from "./components/Pagination.js";
 
+export { Progress } from "./components/Progress.js";
+export type { ProgressProps, ProgressSize } from "./components/Progress.js";
+
+export { SearchField } from "./components/SearchField.js";
+export type { SearchFieldProps } from "./components/SearchField.js";
+
 export { cx } from "./utils/cx.js";
 
 // Convenience re-exports from React Aria for app-level setup.
