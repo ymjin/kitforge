@@ -5,7 +5,9 @@ styled with `@kitforge/tokens`. The hard parts — accessibility, keyboard
 navigation, focus management — are handled for you; the appearance is 100% your
 tokens, so widgets look identical across every browser and OS.
 
-## Phase 1 components
+## Components
+
+**Phase 1 — form & dialog**
 
 | Component | Replaces | Notes |
 |-----------|----------|-------|
@@ -16,6 +18,18 @@ tokens, so widgets look identical across every browser and OS.
 | `Switch` | — | iOS-style toggle (no native equivalent) |
 | `DatePicker` | `<input type=date>` | calendar + i18n (the original motivation) |
 | `Modal` | — | focus trap, scroll lock, Esc/click-outside |
+
+**Phase 2 — form**: `Textarea`, `RadioGroup`+`Radio`, `Combobox`+`ComboboxItem`
+(searchable select), `Slider`, `NumberField`
+
+**Phase 2 — overlay/feedback**: `Popover`, `Tooltip`, `Drawer` (4-way placement),
+`AlertDialog` (replaces `confirm()`), `ToastProvider`+`useToast`
+
+**Phase 2 — integration**:
+- `FileUpload` — direct signed-`PUT` upload, pairs with `@kitforge/storage`
+- `Avatar` — accepts a `@kitforge/auth` session `user`; initials fallback
+
+**Phase 2 — display**: `Badge`, `Card` (+`CardHeader`/`Body`/`Footer`), `Spinner`, `Skeleton`
 
 ## Setup
 
