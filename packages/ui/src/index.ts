@@ -129,6 +129,9 @@ export type { ProgressProps, ProgressSize } from "./components/Progress.js";
 export { SearchField } from "./components/SearchField.js";
 export type { SearchFieldProps } from "./components/SearchField.js";
 
+export { Calendar } from "./components/Calendar.js";
+export type { CalendarProps } from "./components/Calendar.js";
+
 export { cx } from "./utils/cx.js";
 
 // Convenience re-exports from React Aria for app-level setup.
