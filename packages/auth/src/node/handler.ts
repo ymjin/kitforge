@@ -11,7 +11,13 @@
  */
 
 import { createAuthorizationUrl, exchangeCode, getUserInfo } from "../core/oauth.js";
-import type { OAuthProvider } from "../core/types.js";
+import type {
+  NormalizedProfile,
+  OAuthProvider,
+  OAuthTokens,
+  Session,
+  SessionUser,
+} from "../core/types.js";
 import {
   COOKIE_PKCE,
   COOKIE_PROVIDER,
@@ -21,8 +27,14 @@ import {
   getCookie,
   setCookie,
 } from "./cookies.js";
-import { DEFAULT_SESSION_MAX_AGE, createSessionToken, verifySessionToken } from "./session.js";
-import type { KitforgeAuthConfig, Session } from "./types.js";
+import {
+  DEFAULT_SESSION_MAX_AGE,
+  createSessionId,
+  createSessionToken,
+  expiryFromNow,
+  verifySessionToken,
+} from "./session.js";
+import type { KitforgeAuthConfig } from "./types.js";
 
 /** Short-lived: only needed until the provider redirects back. */
 const OAUTH_COOKIE_MAX_AGE = 60 * 10; // 10 minutes
@@ -91,7 +103,7 @@ export class KitforgeAuth {
 
     // POST /auth/signout
     if (method === "POST" && subpath === "/signout") {
-      return this.handleSignOut();
+      return this.handleSignOut(request);
     }
 
     // GET /auth/session
@@ -113,9 +125,30 @@ export class KitforgeAuth {
    * ```
    */
   async getSession(request: Request): Promise<Session | null> {
-    const token = getCookie(request, COOKIE_SESSION);
-    if (!token) return null;
-    return verifySessionToken(token, this.cfg.secret);
+    return this.getSessionByCookieValue(getCookie(request, COOKIE_SESSION));
+  }
+
+  /**
+   * Resolve a session from a raw cookie value.
+   *
+   * - With a `sessionStore`: looks the id up in the store (instant-invalidation).
+   * - Without one: verifies the signed JWT.
+   *
+   * Exposed so the Next.js adapter can read from `next/headers` cookies, where
+   * a `Request` object isn't available.
+   */
+  async getSessionByCookieValue(value: string | undefined): Promise<Session | null> {
+    if (!value) return null;
+    if (this.cfg.sessionStore) return this.cfg.sessionStore.get(value);
+    return verifySessionToken(value, this.cfg.secret);
+  }
+
+  /**
+   * Delete a stored session by its cookie value (no-op for JWT sessions).
+   * Exposed for the Next.js adapter's `signOut()`.
+   */
+  async deleteStoredSession(value: string | undefined): Promise<void> {
+    if (value && this.cfg.sessionStore) await this.cfg.sessionStore.delete(value);
   }
 
   // ── Route handlers ────────────────────────────────────────────────────────
@@ -181,20 +214,15 @@ export class KitforgeAuth {
       const tokens  = await exchangeCode(provider, { code, redirectUri, codeVerifier });
       const profile = await getUserInfo(provider, tokens.accessToken, tokens);
 
-      await this.cfg.onSignIn(profile);
+      // Persist the user via the adapter (if configured) and derive the
+      // session user — its id is the DB id when an adapter is present.
+      const sessionUser = await this.resolveSessionUser(profile, tokens);
 
-      const sessionToken = await createSessionToken(
-        profile,
-        this.cfg.secret,
-        this.cfg.sessionMaxAge,
-      );
+      await this.cfg.onSignIn(profile);
 
       const secure  = this.cfg.baseUrl.startsWith("https://");
       const headers = new Headers({ location: this.cfg.redirectTo });
-      setCookie(headers, COOKIE_SESSION, sessionToken, {
-        maxAge: this.cfg.sessionMaxAge,
-        secure,
-      });
+      await this.writeSessionCookie(headers, sessionUser, secure);
       clearCookie(headers, COOKIE_STATE);
       clearCookie(headers, COOKIE_PKCE);
       clearCookie(headers, COOKIE_PROVIDER);
@@ -206,8 +234,9 @@ export class KitforgeAuth {
     }
   }
 
-  /** POST /auth/signout → clear session → 302 */
-  private handleSignOut(): Response {
+  /** POST /auth/signout → clear session (+ delete from store) → 302 */
+  private async handleSignOut(request: Request): Promise<Response> {
+    await this.deleteStoredSession(getCookie(request, COOKIE_SESSION));
     const headers = new Headers({ location: this.cfg.signOutRedirectTo });
     clearCookie(headers, COOKIE_SESSION);
     return new Response(null, { status: 302, headers });
@@ -220,6 +249,76 @@ export class KitforgeAuth {
       status: 200,
       headers: { "content-type": "application/json" },
     });
+  }
+
+  // ── Session helpers ─────────────────────────────────────────────────────────
+
+  /**
+   * Turn a freshly authenticated profile into the session user.
+   *
+   * With an adapter: find-or-create the user, link the provider account, and
+   * use the DB id. Without one: use the provider profile directly.
+   */
+  private async resolveSessionUser(
+    profile: NormalizedProfile,
+    tokens: OAuthTokens,
+  ): Promise<SessionUser> {
+    const { adapter } = this.cfg;
+    if (!adapter) {
+      return {
+        id:        profile.id,
+        provider:  profile.provider,
+        email:     profile.email,
+        name:      profile.name,
+        avatarUrl: profile.avatarUrl,
+      };
+    }
+
+    let user = await adapter.getUserByAccount(profile.provider, profile.id);
+    if (!user) {
+      user = await adapter.createUser(profile);
+      await adapter.linkAccount(user.id, {
+        provider:          profile.provider,
+        providerAccountId: profile.id,
+        accessToken:       tokens.accessToken,
+        refreshToken:      tokens.refreshToken,
+        idToken:           tokens.idToken,
+        expiresAt:         tokens.expiresAt,
+        scope:             tokens.scope,
+      });
+    }
+
+    return {
+      id:        user.id,
+      provider:  profile.provider,
+      email:     user.email,
+      name:      user.name,
+      avatarUrl: user.avatarUrl,
+    };
+  }
+
+  /**
+   * Write the session cookie.
+   * - With a store: persist the session, cookie holds an opaque id.
+   * - Without one: cookie holds a signed JWT (stateless).
+   */
+  private async writeSessionCookie(
+    headers: Headers,
+    user: SessionUser,
+    secure: boolean,
+  ): Promise<void> {
+    const maxAge = this.cfg.sessionMaxAge;
+    const { sessionStore } = this.cfg;
+
+    if (sessionStore) {
+      const sessionId = createSessionId();
+      const session: Session = { user, expiresAt: expiryFromNow(maxAge) };
+      await sessionStore.set(sessionId, session, maxAge);
+      setCookie(headers, COOKIE_SESSION, sessionId, { maxAge, secure });
+    } else {
+      const token = await createSessionToken(user, this.cfg.secret, maxAge);
+      setCookie(headers, COOKIE_SESSION, token, { maxAge, secure });
+    }
   }
 
   // ── Helpers ───────────────────────────────────────────────────────────────

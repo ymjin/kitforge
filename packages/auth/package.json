@@ -33,7 +33,13 @@
       "types": "./dist/react/index.d.ts",
       "import": "./dist/react/index.js",
       "require": "./dist/react/index.cjs"
-    }
+    },
+    "./adapters": {
+      "types": "./dist/adapters/index.d.ts",
+      "import": "./dist/adapters/index.js",
+      "require": "./dist/adapters/index.cjs"
+    },
+    "./adapters/schema.sql": "./dist/adapters/schema.sql"
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

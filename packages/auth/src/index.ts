@@ -31,4 +31,12 @@ export type {
   OAuthTokens,
   OAuthProvider,
   ProviderOptions,
+  // Session
+  Session,
+  SessionUser,
+  // External storage contracts — implement these for your own database.
+  AuthAdapter,
+  AdapterUser,
+  AdapterAccount,
+  SessionStore,
 } from "./core/types.js";

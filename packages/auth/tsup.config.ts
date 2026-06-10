@@ -9,10 +9,13 @@ export default defineConfig({
     "src/node/index.ts",
     "src/next/index.ts",
     "src/react/index.ts",
+    "src/adapters/index.ts",
   ],
   // context.tsx contains JSX — tsup/esbuild handles .tsx automatically.
   // React is a peerDependency and must NOT be bundled.
   external: ["react", "react-dom", "next"],
+  // Ship the Supabase schema alongside the built adapters.
+  onSuccess: "cp src/adapters/schema.sql dist/adapters/schema.sql",
   format: ["esm", "cjs"],
   dts: true,
   clean: true,

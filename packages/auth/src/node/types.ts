@@ -5,7 +5,15 @@
  * Hono, Fastify (with @fastify/middie), and any other Node 18+ server.
  */
 
-import type { NormalizedProfile, OAuthProvider } from "../core/types.js";
+import type {
+  AuthAdapter,
+  NormalizedProfile,
+  OAuthProvider,
+  SessionStore,
+} from "../core/types.js";
+
+// Re-export so consumers can import session types from the adapter entry too.
+export type { Session, SessionUser } from "../core/types.js";
 
 export interface KitforgeAuthConfig {
   /** One or more provider instances built with factory functions. */
@@ -47,22 +55,26 @@ export interface KitforgeAuthConfig {
   sessionMaxAge?: number;
   /**
    * Called after every successful sign-in, before the session cookie is set.
-   * Use this hook to upsert the user in your database.
+   * Use this hook for side effects (analytics, welcome email). For persisting
+   * the user, prefer `adapter` — it also feeds the session `user.id`.
    */
   onSignIn?: (profile: NormalizedProfile) => Promise<void> | void;
-}
-
-/** The normalized session object available to your app. */
-export interface Session {
-  user: {
-    /** Provider-scoped stable user id. */
-    id: string;
-    /** Which provider authenticated the user, e.g. `"google"`. */
-    provider: string;
-    email?: string;
-    name?: string;
-    avatarUrl?: string;
-  };
-  /** ISO-8601 string of when this session expires. */
-  expiresAt: string;
+  /**
+   * Optional database adapter. When set, each sign-in upserts a user + links
+   * the provider account, and the session `user.id` becomes your DB id.
+   *
+   * Use `SupabaseAdapter` / `InMemoryAdapter` from `@kitforge/auth/adapters`,
+   * or implement {@link AuthAdapter} yourself.
+   */
+  adapter?: AuthAdapter;
+  /**
+   * Optional server-side session store. When set, the session cookie holds an
+   * opaque id and the session body lives in your store — enabling instant
+   * logout and invalidation. When omitted, stateless signed-JWT cookies are
+   * used (the default).
+   *
+   * Use `SupabaseSessionStore` / `InMemorySessionStore` from
+   * `@kitforge/auth/adapters`, or implement {@link SessionStore} yourself.
+   */
+  sessionStore?: SessionStore;
 }

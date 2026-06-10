@@ -7,8 +7,7 @@
  */
 
 import { SignJWT, jwtVerify } from "jose";
-import type { NormalizedProfile } from "../core/types.js";
-import type { Session } from "./types.js";
+import type { Session, SessionUser } from "../core/types.js";
 
 const ALG = "HS256";
 export const DEFAULT_SESSION_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
@@ -18,25 +17,42 @@ function secretBytes(secret: string): Uint8Array {
 }
 
 /**
- * Create a signed session JWT from a normalized profile.
+ * Create a signed session JWT from a session user.
  * @param maxAgeSeconds  Cookie + JWT lifetime. Default: 30 days.
  */
 export async function createSessionToken(
-  profile: NormalizedProfile,
+  user: SessionUser,
   secret: string,
   maxAgeSeconds: number = DEFAULT_SESSION_MAX_AGE,
 ): Promise<string> {
   return new SignJWT({
-    provider:  profile.provider,
-    email:     profile.email,
-    name:      profile.name,
-    avatarUrl: profile.avatarUrl,
+    provider:  user.provider,
+    email:     user.email,
+    name:      user.name,
+    avatarUrl: user.avatarUrl,
   })
     .setProtectedHeader({ alg: ALG })
-    .setSubject(profile.id)
+    .setSubject(user.id)
     .setIssuedAt()
     .setExpirationTime(`${maxAgeSeconds}s`)
     .sign(secretBytes(secret));
+}
+
+/**
+ * Generate a high-entropy, url-safe session id for server-side session stores.
+ * 256 bits of randomness — unguessable, so no separate signing is needed.
+ */
+export function createSessionId(): string {
+  const bytes = new Uint8Array(32);
+  globalThis.crypto.getRandomValues(bytes);
+  let binary = "";
+  for (const b of bytes) binary += String.fromCharCode(b);
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+/** Compute an ISO-8601 expiry string `maxAgeSeconds` from now. */
+export function expiryFromNow(maxAgeSeconds: number): string {
+  return new Date(Date.now() + maxAgeSeconds * 1000).toISOString();
 }
 
 /**

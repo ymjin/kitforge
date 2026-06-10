@@ -74,7 +74,6 @@ import { redirect } from "next/navigation";
 import type { NextRequest } from "next/server";
 import { COOKIE_SESSION } from "../node/cookies.js";
 import { KitforgeAuth } from "../node/handler.js";
-import { verifySessionToken } from "../node/session.js";
 import type { Session } from "../node/types.js";
 import type { NextKitforgeAuthConfig } from "./types.js";
 
@@ -103,13 +102,10 @@ export class NextKitforgeAuth {
     POST: (request: NextRequest) => Promise<Response>;
   };
 
-  private readonly secret: string;
-
   constructor(config: NextKitforgeAuthConfig) {
     // Default basePath for Next.js is /api/auth (not /auth like the node adapter)
     const basePath = config.basePath ?? "/api/auth";
     this.basePath  = basePath;
-    this.secret    = config.secret;
 
     this.node = new KitforgeAuth({ ...config, basePath });
 
@@ -140,9 +136,9 @@ export class NextKitforgeAuth {
    */
   async auth(): Promise<Session | null> {
     const cookieStore = await cookies();
-    const token = cookieStore.get(COOKIE_SESSION)?.value;
-    if (!token) return null;
-    return verifySessionToken(token, this.secret);
+    const value = cookieStore.get(COOKIE_SESSION)?.value;
+    // Delegates to the node adapter so JWT and session-store strategies both work.
+    return this.node.getSessionByCookieValue(value);
   }
 
   /**
@@ -179,6 +175,8 @@ export class NextKitforgeAuth {
    */
   async signOut(options?: { redirectTo?: string }): Promise<never> {
     const cookieStore = await cookies();
+    // Invalidate the server-side session first (no-op for JWT strategy).
+    await this.node.deleteStoredSession(cookieStore.get(COOKIE_SESSION)?.value);
     cookieStore.delete(COOKIE_SESSION);
     redirect(options?.redirectTo ?? "/");
   }
