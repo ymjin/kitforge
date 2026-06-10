@@ -19,9 +19,13 @@
  *    <I18nProvider locale="ko-KR"><App /></I18nProvider>
  *    ```
  *
- * Phase 1 components: Button, TextField, Select, Checkbox, Switch, DatePicker, Modal.
+ * Phase 1: Button, TextField, Select, Checkbox, Switch, DatePicker, Modal.
+ * Phase 2: Textarea, RadioGroup, Combobox, Slider, NumberField (form);
+ *          Popover, Tooltip, Drawer, AlertDialog, Toast (overlay);
+ *          FileUpload, Avatar (integration); Badge, Card, Spinner, Skeleton (display).
  */
 
+// ── Phase 1 ─────────────────────────────────────────────────────────────────
 export { Button } from "./components/Button.js";
 export type { ButtonProps, ButtonVariant, ButtonSize } from "./components/Button.js";
 
@@ -42,6 +46,58 @@ export type { DatePickerProps } from "./components/DatePicker.js";
 
 export { Modal } from "./components/Modal.js";
 export type { ModalProps } from "./components/Modal.js";
+
+// ── Phase 2: form ─────────────────────────────────────────────────────────────
+export { Textarea } from "./components/Textarea.js";
+export type { TextareaProps } from "./components/Textarea.js";
+
+export { RadioGroup, Radio } from "./components/RadioGroup.js";
+export type { RadioGroupProps, RadioProps } from "./components/RadioGroup.js";
+
+export { Combobox, ComboboxItem } from "./components/Combobox.js";
+export type { ComboboxProps, ComboboxItemProps } from "./components/Combobox.js";
+
+export { Slider } from "./components/Slider.js";
+export type { SliderProps } from "./components/Slider.js";
+
+export { NumberField } from "./components/NumberField.js";
+export type { NumberFieldProps } from "./components/NumberField.js";
+
+// ── Phase 2: overlay / feedback ───────────────────────────────────────────────
+export { Popover } from "./components/Popover.js";
+export type { PopoverProps } from "./components/Popover.js";
+
+export { Tooltip } from "./components/Tooltip.js";
+export type { TooltipProps } from "./components/Tooltip.js";
+
+export { Drawer } from "./components/Drawer.js";
+export type { DrawerProps, DrawerPlacement } from "./components/Drawer.js";
+
+export { AlertDialog } from "./components/AlertDialog.js";
+export type { AlertDialogProps } from "./components/AlertDialog.js";
+
+export { ToastProvider, useToast } from "./components/Toast.js";
+export type { ToastProviderProps, ToastOptions, ToastVariant } from "./components/Toast.js";
+
+// ── Phase 2: integration ──────────────────────────────────────────────────────
+export { FileUpload } from "./components/FileUpload.js";
+export type { FileUploadProps } from "./components/FileUpload.js";
+
+export { Avatar } from "./components/Avatar.js";
+export type { AvatarProps, AvatarUser, AvatarSize } from "./components/Avatar.js";
+
+// ── Phase 2: display ──────────────────────────────────────────────────────────
+export { Badge } from "./components/Badge.js";
+export type { BadgeProps, BadgeVariant } from "./components/Badge.js";
+
+export { Card, CardHeader, CardBody, CardFooter } from "./components/Card.js";
+export type { CardProps } from "./components/Card.js";
+
+export { Spinner } from "./components/Spinner.js";
+export type { SpinnerProps, SpinnerSize } from "./components/Spinner.js";
+
+export { Skeleton } from "./components/Skeleton.js";
+export type { SkeletonProps } from "./components/Skeleton.js";
 
 export { cx } from "./utils/cx.js";
 
