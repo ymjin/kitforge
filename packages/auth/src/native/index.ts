@@ -36,6 +36,9 @@ export type {
 export { useOAuth } from "./useOAuth.js";
 export type { UseOAuthOptions, UseOAuthResult } from "./useOAuth.js";
 
+export { useAppleAuth } from "./useAppleAuth.js";
+export type { UseAppleAuthResult } from "./useAppleAuth.js";
+
 export { expoSecureStorage } from "./storage.js";
 export type { SecureStorage } from "./storage.js";
 

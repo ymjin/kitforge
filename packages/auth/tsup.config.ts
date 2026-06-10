@@ -14,7 +14,14 @@ export default defineConfig({
   ],
   // context.tsx contains JSX — tsup/esbuild handles .tsx automatically.
   // React, Next, and the Expo packages are peer deps and must NOT be bundled.
-  external: ["react", "react-dom", "next", "expo-auth-session", "expo-secure-store"],
+  external: [
+    "react",
+    "react-dom",
+    "next",
+    "expo-auth-session",
+    "expo-secure-store",
+    "expo-apple-authentication",
+  ],
   // Ship the Supabase schema alongside the built adapters.
   onSuccess: "cp src/adapters/schema.sql dist/adapters/schema.sql",
   format: ["esm", "cjs"],

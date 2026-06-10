@@ -60,3 +60,29 @@ declare module "expo-auth-session" {
 declare module "expo-web-browser" {
   export function maybeCompleteAuthSession(): void;
 }
+
+declare module "expo-apple-authentication" {
+  export enum AppleAuthenticationScope {
+    FULL_NAME = 0,
+    EMAIL = 1,
+  }
+  export interface AppleAuthenticationFullName {
+    givenName: string | null;
+    familyName: string | null;
+  }
+  export interface AppleAuthenticationCredential {
+    /** Stable, app-scoped user id (the id_token `sub`). */
+    user: string;
+    /** Present only on first sign-in (or with private relay). */
+    email: string | null;
+    /** Present only on first sign-in. */
+    fullName: AppleAuthenticationFullName | null;
+    /** The signed id_token (JWT) — verify this on your backend. */
+    identityToken: string | null;
+    authorizationCode: string | null;
+  }
+  export function isAvailableAsync(): Promise<boolean>;
+  export function signInAsync(options?: {
+    requestedScopes?: AppleAuthenticationScope[];
+  }): Promise<AppleAuthenticationCredential>;
+}

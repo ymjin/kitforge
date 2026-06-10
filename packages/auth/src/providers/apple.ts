@@ -111,24 +111,36 @@ export function Apple(options: AppleOptions): OAuthProvider {
  */
 function mapAppleProfile(
   raw: Record<string, unknown>,
-  provider: OAuthProvider,
+  _provider: OAuthProvider,
+): NormalizedProfile {
+  return mapAppleClaims(raw);
+}
+
+/**
+ * Map Apple id_token claims to a {@link NormalizedProfile}. Exported so the
+ * native adapter (`@kitforge/auth/native`) produces the SAME profile shape as
+ * the web flow — one source of truth for "what an Apple user looks like".
+ *
+ * `name` isn't in the id_token; Apple returns it only on first sign-in (web:
+ * the `user` param, native: `credential.fullName`). Pass it via `options.name`.
+ */
+export function mapAppleClaims(
+  claims: Record<string, unknown>,
+  options: { name?: string } = {},
 ): NormalizedProfile {
   // Apple sends email_verified as a string "true"/"false" (not boolean).
-  const emailVerifiedRaw = raw["email_verified"];
-  const emailVerified =
-    emailVerifiedRaw === true ||
-    emailVerifiedRaw === "true";
+  const emailVerifiedRaw = claims["email_verified"];
+  const emailVerified = emailVerifiedRaw === true || emailVerifiedRaw === "true";
 
   return {
-    provider: provider.id,
-    id: String(raw["sub"]),
-    email: typeof raw["email"] === "string" ? raw["email"] : undefined,
+    provider: "apple",
+    id: String(claims["sub"]),
+    email: typeof claims["email"] === "string" ? claims["email"] : undefined,
     emailVerified,
-    // name: set by the adapter from the first-login `user` param.
-    name: undefined,
+    name: options.name,
     // Apple has no avatar.
     avatarUrl: undefined,
-    raw,
+    raw: claims,
   };
 }
 
