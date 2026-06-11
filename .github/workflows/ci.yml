@@ -21,7 +21,9 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      - run: pnpm install --frozen-lockfile
+      # --ignore-scripts skips lifecycle scripts (and pnpm's build-approval gate);
+      # esbuild/sharp work via their prebuilt platform packages without them.
+      - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: pnpm typecheck
       - run: pnpm build
       - run: pnpm test
