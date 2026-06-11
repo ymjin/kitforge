@@ -1,6 +1,6 @@
 {
   "name": "@ymjin/ui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Accessible React components (React Aria) styled with @ymjin/tokens — consistent widgets across every browser.",
   "license": "MIT",
   "type": "module",

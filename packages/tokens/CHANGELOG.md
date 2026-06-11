@@ -1,5 +1,11 @@
 # @ymjin/tokens
 
+## 0.1.1
+
+### Patch Changes
+
+- ec55f83: Verify the automated release pipeline (Changesets GitHub Action). No functional change.
+
 ## 0.1.0
 
 ### Minor Changes
