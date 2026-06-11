@@ -1,0 +1,3 @@
+# kitforge pre-push gate (library) — typecheck + unit tests before push.
+# Bypass for emergencies: git push --no-verify
+pnpm typecheck && pnpm test

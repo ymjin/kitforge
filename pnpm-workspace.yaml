@@ -2,9 +2,11 @@ packages:
   - "packages/*"
   - "apps/*"
 
+# Build these (they have prebuilt binaries — fast); auto-installed via optional
+# peers (next → sharp, esbuild for tsup/vitest). msgpackr came from turbo (removed).
 onlyBuiltDependencies:
   - esbuild
-
-ignoredBuiltDependencies:
-  - msgpackr-extract
   - sharp
+
+# Skip pnpm 11's pre-run deps check so `pnpm run/exec` don't trip the build gate.
+verifyDepsBeforeRun: false

@@ -188,9 +188,13 @@ export class KitforgeAuth {
     let state: string | null = null;
 
     if (request.method.toUpperCase() === "POST") {
-      const form = await request.formData().catch(() => null);
-      code  = (form?.get("code")  as string | null) ?? null;
-      state = (form?.get("state") as string | null) ?? null;
+      // Typed minimally so the check is independent of which `FormData` lib type
+      // resolves in the consumer's toolchain (DOM vs Node globals can differ).
+      const form = (await request.formData().catch(() => null)) as {
+        get(name: string): unknown;
+      } | null;
+      code  = typeof form?.get("code")  === "string" ? (form.get("code") as string) : null;
+      state = typeof form?.get("state") === "string" ? (form.get("state") as string) : null;
     } else {
       const url = new URL(request.url);
       code  = url.searchParams.get("code");
