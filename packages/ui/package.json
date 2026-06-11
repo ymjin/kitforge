@@ -1,6 +1,6 @@
 {
   "name": "@kitforge/ui",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Accessible React components (React Aria) styled with @kitforge/tokens — consistent widgets across every browser.",
   "license": "MIT",
   "type": "module",

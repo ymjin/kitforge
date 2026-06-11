@@ -1,6 +1,6 @@
 {
   "name": "@kitforge/ui-native",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "React Native components styled with @kitforge/tokens via NativeWind — the native counterpart to @kitforge/ui.",
   "license": "MIT",
   "type": "module",
