@@ -94,7 +94,7 @@ export class StorageError extends Error {
   constructor(
     message: string,
     readonly code: StorageErrorCode,
-    readonly cause?: unknown,
+    override readonly cause?: unknown,
   ) {
     super(message);
     this.name = "StorageError";
