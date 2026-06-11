@@ -26,9 +26,19 @@
   },
   "peerDependencies": {
     "@kitforge/tokens": "workspace:*",
+    "@react-native-community/datetimepicker": ">=7.0.0",
+    "@react-native-community/slider": ">=4.0.0",
     "nativewind": ">=4.0.0",
     "react": ">=18.0.0",
     "react-native": ">=0.72.0"
+  },
+  "peerDependenciesMeta": {
+    "@react-native-community/slider": {
+      "optional": true
+    },
+    "@react-native-community/datetimepicker": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/react": "^18.3.31",

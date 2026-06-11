@@ -8,5 +8,13 @@ export default defineConfig({
   sourcemap: true,
   minify: false,
   // React Native, React, and the tokens are peer deps — never bundle them.
-  external: ["react", "react/jsx-runtime", "react-native", "@kitforge/tokens", "nativewind"],
+  external: [
+    "react",
+    "react/jsx-runtime",
+    "react-native",
+    "@kitforge/tokens",
+    "nativewind",
+    "@react-native-community/slider",
+    "@react-native-community/datetimepicker",
+  ],
 });

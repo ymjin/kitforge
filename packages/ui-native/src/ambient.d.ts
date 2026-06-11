@@ -17,9 +17,14 @@ declare module "react-native" {
     className?: string;
     style?: StyleProp<ViewStyle | TextStyle>;
     children?: ReactNode;
+    accessibilityRole?: string;
+    accessibilityLabel?: string;
+    accessibilityState?: Record<string, boolean | undefined>;
   }
 
-  export interface ViewProps extends Styled {}
+  export interface ViewProps extends Styled {
+    pointerEvents?: "auto" | "none" | "box-none" | "box-only";
+  }
   export const View: ComponentType<ViewProps>;
 
   export interface TextProps extends Styled {}
@@ -78,4 +83,40 @@ declare module "react-native" {
 declare module "@kitforge/tokens" {
   /** The color scales (primary/neutral/success/warning/danger 50–900, white/black). */
   export const color: { [group: string]: any };
+}
+
+declare module "@react-native-community/slider" {
+  import type { ComponentType } from "react";
+  export interface SliderProps {
+    value?: number;
+    onValueChange?: (value: number) => void;
+    minimumValue?: number;
+    maximumValue?: number;
+    step?: number;
+    disabled?: boolean;
+    minimumTrackTintColor?: string;
+    maximumTrackTintColor?: string;
+    thumbTintColor?: string;
+    style?: unknown;
+  }
+  const Slider: ComponentType<SliderProps>;
+  export default Slider;
+}
+
+declare module "@react-native-community/datetimepicker" {
+  import type { ComponentType } from "react";
+  export interface DateTimePickerEvent {
+    type: "set" | "dismissed" | string;
+    nativeEvent: { timestamp?: number };
+  }
+  export interface DateTimePickerProps {
+    value: Date;
+    mode?: "date" | "time" | "datetime";
+    display?: "default" | "spinner" | "calendar" | "clock" | "inline" | "compact";
+    onChange?: (event: DateTimePickerEvent, date?: Date) => void;
+    minimumDate?: Date;
+    maximumDate?: Date;
+  }
+  const DateTimePicker: ComponentType<DateTimePickerProps>;
+  export default DateTimePicker;
 }

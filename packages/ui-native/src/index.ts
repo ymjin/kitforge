@@ -28,7 +28,7 @@
  * ```
  *
  * Phase 1: Button, TextField, Switch, Checkbox, Modal, Badge, Card, Spinner.
- * Phase 2 (community-lib wrappers): Select, DatePicker, RadioGroup, Slider, Toast.
+ * Phase 2: RadioGroup, Select, Slider, DatePicker, Toast.
  */
 
 export { Button } from "./components/Button.js";
@@ -54,5 +54,21 @@ export type { CardProps } from "./components/Card.js";
 
 export { Spinner } from "./components/Spinner.js";
 export type { SpinnerProps, SpinnerSize } from "./components/Spinner.js";
+
+// ── Phase 2 ──────────────────────────────────────────────────────────────────
+export { RadioGroup, Radio } from "./components/RadioGroup.js";
+export type { RadioGroupProps, RadioProps } from "./components/RadioGroup.js";
+
+export { Select } from "./components/Select.js";
+export type { SelectProps, SelectOption } from "./components/Select.js";
+
+export { Slider } from "./components/Slider.js";
+export type { SliderProps } from "./components/Slider.js";
+
+export { DatePicker } from "./components/DatePicker.js";
+export type { DatePickerProps } from "./components/DatePicker.js";
+
+export { ToastProvider, useToast } from "./components/Toast.js";
+export type { ToastProviderProps, ToastOptions, ToastVariant } from "./components/Toast.js";
 
 export { cx } from "./utils/cx.js";
