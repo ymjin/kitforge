@@ -8,7 +8,7 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: BadgeVariant;
 }
 
-/** A small status/label pill, styled with `@kitforge/tokens`. */
+/** A small status/label pill, styled with `@ymjin/tokens`. */
 export function Badge({ variant = "neutral", className, ...props }: BadgeProps) {
   return <span className={cx("kf-badge", `kf-badge--${variant}`, className)} {...props} />;
 }

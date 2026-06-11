@@ -1,10 +1,10 @@
 /**
- * @kitforge/auth — framework-agnostic OAuth 2.0 core.
+ * @ymjin/auth — framework-agnostic OAuth 2.0 core.
  *
  * This entry exposes the provider-neutral flow (authorize → exchange → refresh
  * → userinfo) and the shared types. Provider factories live in
- * `@kitforge/auth/providers`; framework bindings (Next.js, React) will live in
- * `@kitforge/auth/next` and `@kitforge/auth/react`.
+ * `@ymjin/auth/providers`; framework bindings (Next.js, React) will live in
+ * `@ymjin/auth/next` and `@ymjin/auth/react`.
  *
  * Security: this package never contains client secrets. Consumers inject them
  * from their own environment at construction time.

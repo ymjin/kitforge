@@ -45,7 +45,7 @@ export function useCurrentPosition(
       setState({
         position: null,
         accuracy: null,
-        error: new Error("[@kitforge/maps] Geolocation is not available in this environment."),
+        error: new Error("[@ymjin/maps] Geolocation is not available in this environment."),
         loading: false,
       });
       return;

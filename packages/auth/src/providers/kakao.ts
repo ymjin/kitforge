@@ -15,7 +15,7 @@
  *
  * @example
  * ```ts
- * import { Kakao } from "@kitforge/auth/providers";
+ * import { Kakao } from "@ymjin/auth/providers";
  * const kakao = Kakao({ clientId: process.env.KAKAO_CLIENT_ID! });
  * ```
  */

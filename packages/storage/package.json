@@ -1,5 +1,5 @@
 {
-  "name": "@kitforge/storage",
+  "name": "@ymjin/storage",
   "version": "0.1.0",
   "description": "One object-storage interface for Google Cloud Storage, AWS S3 (+ Naver Cloud, R2), Supabase Storage, and local disk.",
   "license": "MIT",

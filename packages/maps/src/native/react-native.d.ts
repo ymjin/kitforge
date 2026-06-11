@@ -1,7 +1,7 @@
 /**
  * Minimal ambient declarations for `react-native` and `react-native-maps`,
  * just the surface this package uses. The consumer's real packages provide the
- * runtime; these only exist so `@kitforge/maps/native` type-checks and emits
+ * runtime; these only exist so `@ymjin/maps/native` type-checks and emits
  * declarations without taking a hard dependency on the (native) RN toolchain.
  */
 

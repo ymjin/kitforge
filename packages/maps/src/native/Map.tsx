@@ -6,7 +6,7 @@ import type { NativeMapProvider } from "./providers.js";
 import { deltaToZoom, zoomToDelta } from "./geo.js";
 
 export interface MapProps {
-  /** `GoogleMaps()` or `AppleMaps()` from `@kitforge/maps/native`. */
+  /** `GoogleMaps()` or `AppleMaps()` from `@ymjin/maps/native`. */
   provider: NativeMapProvider;
   center: LatLng;
   zoom: number;
@@ -15,7 +15,7 @@ export interface MapProps {
   onClick?: (point: LatLng) => void;
   onCenterChange?: (center: LatLng) => void;
   onZoomChange?: (zoom: number) => void;
-  /** `<Marker>`, `<Polygon>`, `<Polyline>` from `@kitforge/maps/native`. */
+  /** `<Marker>`, `<Polygon>`, `<Polyline>` from `@ymjin/maps/native`. */
   children?: ReactNode;
   /** Defaults to `{ flex: 1 }`. */
   style?: StyleProp<ViewStyle>;
@@ -29,7 +29,7 @@ export interface MapProps {
  * Requires a dev/EAS build — `react-native-maps` does not run in Expo Go.
  *
  * ```tsx
- * import { Map, Marker, GoogleMaps } from "@kitforge/maps/native";
+ * import { Map, Marker, GoogleMaps } from "@ymjin/maps/native";
  *
  * <Map provider={GoogleMaps()} center={{ lat: 37.5665, lng: 126.978 }} zoom={12}>
  *   <Marker position={{ lat: 37.5665, lng: 126.978 }} title="서울시청" />

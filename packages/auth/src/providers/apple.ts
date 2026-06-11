@@ -29,7 +29,7 @@
  *
  * @example
  * ```ts
- * import { Apple } from "@kitforge/auth/providers";
+ * import { Apple } from "@ymjin/auth/providers";
  *
  * const apple = Apple({
  *   clientId:   process.env.APPLE_CLIENT_ID!,
@@ -118,7 +118,7 @@ function mapAppleProfile(
 
 /**
  * Map Apple id_token claims to a {@link NormalizedProfile}. Exported so the
- * native adapter (`@kitforge/auth/native`) produces the SAME profile shape as
+ * native adapter (`@ymjin/auth/native`) produces the SAME profile shape as
  * the web flow — one source of truth for "what an Apple user looks like".
  *
  * `name` isn't in the id_token; Apple returns it only on first sign-in (web:

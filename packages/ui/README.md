@@ -1,7 +1,7 @@
-# @kitforge/ui
+# @ymjin/ui
 
 Accessible React components built on [React Aria](https://react-spectrum.adobe.com/react-aria/),
-styled with `@kitforge/tokens`. The hard parts — accessibility, keyboard
+styled with `@ymjin/tokens`. The hard parts — accessibility, keyboard
 navigation, focus management — are handled for you; the appearance is 100% your
 tokens, so widgets look identical across every browser and OS.
 
@@ -26,8 +26,8 @@ tokens, so widgets look identical across every browser and OS.
 `AlertDialog` (replaces `confirm()`), `ToastProvider`+`useToast`
 
 **Phase 2 — integration**:
-- `FileUpload` — direct signed-`PUT` upload, pairs with `@kitforge/storage`
-- `Avatar` — accepts a `@kitforge/auth` session `user`; initials fallback
+- `FileUpload` — direct signed-`PUT` upload, pairs with `@ymjin/storage`
+- `Avatar` — accepts a `@ymjin/auth` session `user`; initials fallback
 
 **Phase 2 — display**: `Badge`, `Card` (+`CardHeader`/`Body`/`Footer`), `Spinner`, `Skeleton`
 
@@ -39,20 +39,20 @@ tokens, so widgets look identical across every browser and OS.
 ## Setup
 
 ```bash
-npm i @kitforge/ui @kitforge/tokens react react-dom react-aria-components
+npm i @ymjin/ui @ymjin/tokens react react-dom react-aria-components
 ```
 
 Import the stylesheets once at your app root:
 
 ```ts
-import "@kitforge/tokens/css";    // CSS variables (--kf-*)
-import "@kitforge/ui/styles.css";  // component styles that consume them
+import "@ymjin/tokens/css";    // CSS variables (--kf-*)
+import "@ymjin/ui/styles.css";  // component styles that consume them
 ```
 
 For Korean dates in `DatePicker`, wrap your app:
 
 ```tsx
-import { I18nProvider } from "@kitforge/ui";
+import { I18nProvider } from "@ymjin/ui";
 
 <I18nProvider locale="ko-KR">
   <App />
@@ -62,7 +62,7 @@ import { I18nProvider } from "@kitforge/ui";
 ## Usage
 
 ```tsx
-import { Button, TextField, Select, SelectItem, Checkbox, Switch, DatePicker, Modal } from "@kitforge/ui";
+import { Button, TextField, Select, SelectItem, Checkbox, Switch, DatePicker, Modal } from "@ymjin/ui";
 
 function Form() {
   const [open, setOpen] = useState(false);
@@ -99,7 +99,7 @@ function Form() {
 
 Each component wraps a React Aria primitive with a kitforge `className`. The CSS
 targets React Aria's data-attributes (`[data-hovered]`, `[data-focus-visible]`,
-`[data-selected]`, …) and reads every value from a `@kitforge/tokens` CSS
+`[data-selected]`, …) and reads every value from a `@ymjin/tokens` CSS
 variable, so restyling the whole system is just editing tokens.
 
 Want a component React Aria doesn't cover well? Add it on Radix — call sites

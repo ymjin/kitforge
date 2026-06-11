@@ -1,5 +1,5 @@
 import { ActivityIndicator } from "react-native";
-import { color } from "@kitforge/tokens";
+import { color } from "@ymjin/tokens";
 
 export type SpinnerSize = "sm" | "md" | "lg";
 

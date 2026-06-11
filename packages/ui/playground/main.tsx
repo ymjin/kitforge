@@ -48,8 +48,8 @@ function App() {
   return (
     <div style={{ maxWidth: 980, margin: "0 auto", padding: "2.5rem 1.5rem 6rem", fontFamily: "Inter, system-ui, sans-serif", color: "#0f172a" }}>
       <header style={{ marginBottom: "2.5rem" }}>
-        <h1 style={{ fontSize: "1.75rem", margin: 0 }}>@kitforge/ui · Playground</h1>
-        <p style={{ color: "#64748b", marginTop: "0.25rem" }}>React Aria 기반 · @kitforge/tokens 스타일 · 30개 컴포넌트</p>
+        <h1 style={{ fontSize: "1.75rem", margin: 0 }}>@ymjin/ui · Playground</h1>
+        <p style={{ color: "#64748b", marginTop: "0.25rem" }}>React Aria 기반 · @ymjin/tokens 스타일 · 30개 컴포넌트</p>
       </header>
 
       <Section title="Buttons">

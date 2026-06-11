@@ -1,5 +1,5 @@
 {
-  "name": "@kitforge/auth",
+  "name": "@ymjin/auth",
   "version": "0.1.0",
   "description": "Framework-agnostic social-login (OAuth 2.0) core for kitforge — Google today; Apple, Kakao, and Naver next.",
   "license": "MIT",

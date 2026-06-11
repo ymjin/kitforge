@@ -33,8 +33,8 @@ export interface ButtonProps {
 }
 
 /**
- * A button (React Native `Pressable`), styled with `@kitforge/tokens` via
- * NativeWind. Same `variant`/`size` API as `@kitforge/ui` on web; uses `onPress`.
+ * A button (React Native `Pressable`), styled with `@ymjin/tokens` via
+ * NativeWind. Same `variant`/`size` API as `@ymjin/ui` on web; uses `onPress`.
  */
 export function Button({
   variant = "primary",

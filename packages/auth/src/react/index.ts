@@ -1,5 +1,5 @@
 /**
- * @kitforge/auth/react — React SPA adapter.
+ * @ymjin/auth/react — React SPA adapter.
  *
  * Provides Context + hooks for reading session state and triggering sign-in /
  * sign-out in a browser SPA (Vite, CRA, Next.js Client Components, etc.).
@@ -7,13 +7,13 @@
  * The React adapter is purely client-side: it reads the session from the
  * server adapter's `/session` endpoint and redirects the browser to
  * `/signin/:provider`. All OAuth flows and session cookies are managed by the
- * server (`@kitforge/auth/node` or `@kitforge/auth/next`).
+ * server (`@ymjin/auth/node` or `@ymjin/auth/next`).
  *
  * ## Setup
  *
  * ```tsx
  * // main.tsx  (Vite SPA)
- * import { KitforgeProvider } from "@kitforge/auth/react";
+ * import { KitforgeProvider } from "@ymjin/auth/react";
  *
  * createRoot(document.getElementById("root")!).render(
  *   <KitforgeProvider basePath="/auth">
@@ -24,7 +24,7 @@
  *
  * ```tsx
  * // app/layout.tsx  (Next.js — wrap in a "use client" Client Component)
- * import { KitforgeProvider } from "@kitforge/auth/react";
+ * import { KitforgeProvider } from "@ymjin/auth/react";
  *
  * export default function RootLayout({ children }) {
  *   return (
@@ -40,7 +40,7 @@
  * ## Hooks
  *
  * ```tsx
- * import { useSession, useSignIn, useSignOut } from "@kitforge/auth/react";
+ * import { useSession, useSignIn, useSignOut } from "@ymjin/auth/react";
  *
  * function Navbar() {
  *   const { session, status } = useSession();

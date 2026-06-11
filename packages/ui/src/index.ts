@@ -1,5 +1,5 @@
 /**
- * @kitforge/ui — accessible React components, styled with @kitforge/tokens.
+ * @ymjin/ui — accessible React components, styled with @ymjin/tokens.
  *
  * Built on React Aria (Adobe): the accessibility, keyboard, and focus logic is
  * battle-tested; the appearance is 100% ours via design tokens, so widgets look
@@ -7,15 +7,15 @@
  *
  * ## Setup
  *
- * 1. Install peers: `react`, `react-dom`, `react-aria-components`, `@kitforge/tokens`.
+ * 1. Install peers: `react`, `react-dom`, `react-aria-components`, `@ymjin/tokens`.
  * 2. Import the stylesheets once at your app root:
  *    ```ts
- *    import "@kitforge/tokens/css";   // the CSS variables
- *    import "@kitforge/ui/styles.css"; // component styles that use them
+ *    import "@ymjin/tokens/css";   // the CSS variables
+ *    import "@ymjin/ui/styles.css"; // component styles that use them
  *    ```
  * 3. For Korean dates in `DatePicker`, wrap your app:
  *    ```tsx
- *    import { I18nProvider } from "@kitforge/ui";
+ *    import { I18nProvider } from "@ymjin/ui";
  *    <I18nProvider locale="ko-KR"><App /></I18nProvider>
  *    ```
  *

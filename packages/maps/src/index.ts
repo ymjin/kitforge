@@ -1,10 +1,10 @@
 /**
- * @kitforge/maps — one map interface over Google Maps and Naver Maps.
+ * @ymjin/maps — one map interface over Google Maps and Naver Maps.
  *
  * - Core (this entry): provider-agnostic types + the `MapProvider` /
  *   `MapController` contracts, plus the `loadScript` SDK loader.
- * - `@kitforge/maps/providers`: `GoogleMaps`, `NaverMaps` factories.
- * - `@kitforge/maps/react`: `<Map>`, `<Marker>`, `<Polygon>`, `<Polyline>`,
+ * - `@ymjin/maps/providers`: `GoogleMaps`, `NaverMaps` factories.
+ * - `@ymjin/maps/react`: `<Map>`, `<Marker>`, `<Polygon>`, `<Polyline>`,
  *   `useCurrentPosition`.
  *
  * Keys (public, domain-restricted) are injected by the consumer; the SDKs load

@@ -1,9 +1,9 @@
 /**
- * @kitforge/storage — one object-storage interface, many backends.
+ * @ymjin/storage — one object-storage interface, many backends.
  *
  * The core entry exposes the `StorageProvider` contract and shared types so you
  * can write provider-agnostic code (and your own backends). Concrete providers
- * live in `@kitforge/storage/providers`:
+ * live in `@ymjin/storage/providers`:
  *
  * - `GoogleCloudStorage` — Google Cloud Storage
  * - `S3Storage` — AWS S3 (and S3-compatible: R2, MinIO …)
@@ -15,8 +15,8 @@
  *
  * ```ts
  * import { S3Client } from "@aws-sdk/client-s3";
- * import { S3Storage } from "@kitforge/storage/providers";
- * import type { StorageProvider } from "@kitforge/storage";
+ * import { S3Storage } from "@ymjin/storage/providers";
+ * import type { StorageProvider } from "@ymjin/storage";
  *
  * const storage: StorageProvider = S3Storage({
  *   client: new S3Client({ region: "ap-northeast-2" }),

@@ -134,7 +134,7 @@ export function useKitforgeContext(): SessionContextValue {
   const ctx = useContext(SessionContext);
   if (!ctx) {
     throw new Error(
-      "[@kitforge/auth] useSession / useSignIn / useSignOut must be called " +
+      "[@ymjin/auth] useSession / useSignIn / useSignOut must be called " +
         "inside a <KitforgeProvider>.",
     );
   }

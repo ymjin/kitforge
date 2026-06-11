@@ -1,5 +1,5 @@
 import { Text, TextInput, View } from "react-native";
-import { color } from "@kitforge/tokens";
+import { color } from "@ymjin/tokens";
 import { cx } from "../utils/cx.js";
 
 export interface TextFieldProps {

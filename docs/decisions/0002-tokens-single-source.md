@@ -11,15 +11,15 @@ React Native.
 
 ## Decision
 
-`@kitforge/tokens` defines values once (TS objects) and emits **three outputs**
+`@ymjin/tokens` defines values once (TS objects) and emits **three outputs**
 from that single source:
 
 1. **TS/JS** export (`color.primary[500]`) — used by JS at runtime (e.g. RN
    `trackColor`).
-2. **CSS variables** (`@kitforge/tokens/css` → `--kf-color-primary-500`).
-3. **Tailwind preset** (`@kitforge/tokens/tailwind`).
+2. **CSS variables** (`@ymjin/tokens/css` → `--kf-color-primary-500`).
+3. **Tailwind preset** (`@ymjin/tokens/tailwind`).
 
-`@kitforge/ui` (web) consumes the CSS variables; `@kitforge/ui-native` consumes
+`@ymjin/ui` (web) consumes the CSS variables; `@ymjin/ui-native` consumes
 the Tailwind preset via NativeWind. So `bg-primary-500` is the identical value
 on web and native.
 

@@ -1,9 +1,9 @@
 /**
- * @kitforge/maps/react — React bindings.
+ * @ymjin/maps/react — React bindings.
  *
  * ```tsx
- * import { GoogleMaps } from "@kitforge/maps/providers";
- * import { Map, Marker, Polygon, Polyline, useCurrentPosition } from "@kitforge/maps/react";
+ * import { GoogleMaps } from "@ymjin/maps/providers";
+ * import { Map, Marker, Polygon, Polyline, useCurrentPosition } from "@ymjin/maps/react";
  * ```
  */
 

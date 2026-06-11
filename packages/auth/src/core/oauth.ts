@@ -130,7 +130,7 @@ export async function getUserInfo(
     const idToken = tokens?.idToken;
     if (!idToken) {
       throw new OAuthError(
-        `[@kitforge/auth] ${provider.id} requires an id_token to build the profile, ` +
+        `[@ymjin/auth] ${provider.id} requires an id_token to build the profile, ` +
           `but none was returned from the token exchange. ` +
           `Ensure the "openid" scope is included.`,
         0,
@@ -142,7 +142,7 @@ export async function getUserInfo(
 
   if (!provider.userinfo.url) {
     throw new OAuthError(
-      `[@kitforge/auth] ${provider.id} has no userinfo.url and fromIdToken is not set.`,
+      `[@ymjin/auth] ${provider.id} has no userinfo.url and fromIdToken is not set.`,
       0,
     );
   }
@@ -227,7 +227,7 @@ async function requestTokens(
 function decodeJwtPayload(jwt: string): Record<string, unknown> {
   const parts = jwt.split(".");
   if (parts.length !== 3 || !parts[1]) {
-    throw new Error("[@kitforge/auth] Malformed JWT: expected 3 dot-separated parts.");
+    throw new Error("[@ymjin/auth] Malformed JWT: expected 3 dot-separated parts.");
   }
   // Convert base64url → base64, then decode
   const base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");

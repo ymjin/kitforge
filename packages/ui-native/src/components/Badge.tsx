@@ -26,7 +26,7 @@ export interface BadgeProps {
   className?: string;
 }
 
-/** A small status pill (React Native), styled with `@kitforge/tokens`. */
+/** A small status pill (React Native), styled with `@ymjin/tokens`. */
 export function Badge({ variant = "neutral", children, className }: BadgeProps) {
   return (
     <View className={cx("self-start rounded-full px-2 py-0.5", CONTAINER[variant], className)}>

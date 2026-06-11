@@ -1,8 +1,8 @@
 /**
- * @kitforge/ui component styles.
+ * @ymjin/ui component styles.
  *
- * Every value references a CSS variable from @kitforge/tokens — import
- * "@kitforge/tokens/css" alongside this file so the variables are defined.
+ * Every value references a CSS variable from @ymjin/tokens — import
+ * "@ymjin/tokens/css" alongside this file so the variables are defined.
  * Fallbacks are provided so components still render if tokens are missing.
  */
 

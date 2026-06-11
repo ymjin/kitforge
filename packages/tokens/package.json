@@ -1,5 +1,5 @@
 {
-  "name": "@kitforge/tokens",
+  "name": "@ymjin/tokens",
   "version": "0.1.0",
   "description": "Design tokens (color, spacing, border, typography, shadow) — the single source of truth for the kitforge design system.",
   "license": "MIT",

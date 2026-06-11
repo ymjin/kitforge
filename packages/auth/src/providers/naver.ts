@@ -16,7 +16,7 @@
  *
  * @example
  * ```ts
- * import { Naver } from "@kitforge/auth/providers";
+ * import { Naver } from "@ymjin/auth/providers";
  * const naver = Naver({
  *   clientId: process.env.NAVER_CLIENT_ID!,
  *   clientSecret: process.env.NAVER_CLIENT_SECRET!,
@@ -29,7 +29,7 @@ import type { NormalizedProfile, OAuthProvider, ProviderOptions } from "../core/
 export function Naver(options: ProviderOptions): OAuthProvider {
   if (!options.clientSecret) {
     throw new Error(
-      "[@kitforge/auth] Naver requires a clientSecret. " +
+      "[@ymjin/auth] Naver requires a clientSecret. " +
         "Set NAVER_CLIENT_SECRET in your environment and pass it to Naver({ clientSecret }).",
     );
   }
@@ -82,7 +82,7 @@ function mapNaverProfile(
 
   if (!response) {
     throw new Error(
-      `[@kitforge/auth] Naver userinfo response missing "response" field. ` +
+      `[@ymjin/auth] Naver userinfo response missing "response" field. ` +
         `resultcode=${String(raw["resultcode"])}, message=${String(raw["message"])}`,
     );
   }

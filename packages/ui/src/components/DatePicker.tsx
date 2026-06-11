@@ -33,7 +33,7 @@ export interface DatePickerProps<T extends DateValue>
  * differ wildly across browsers, with one consistent, fully-styled control.
  *
  * For Korean month/day names, wrap your app in React Aria's
- * `<I18nProvider locale="ko-KR">` (re-exported from `@kitforge/ui`).
+ * `<I18nProvider locale="ko-KR">` (re-exported from `@ymjin/ui`).
  */
 export function DatePicker<T extends DateValue>({
   label,

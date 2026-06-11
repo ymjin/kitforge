@@ -1,20 +1,20 @@
 /**
- * @kitforge/auth/native — React Native (Expo) auth.
+ * @ymjin/auth/native — React Native (Expo) auth.
  *
  * A native sign-in flow (expo-auth-session + expo-secure-store) that shares the
- * SAME data as the web build: provider configs from `@kitforge/auth/providers`,
+ * SAME data as the web build: provider configs from `@ymjin/auth/providers`,
  * the `getUserInfo` profile fetch, and the `NormalizedProfile` shape. The flow
  * is separate; the data is one source of truth — so a Google user is identical
  * on web and native.
  *
  * ```tsx
  * // App root
- * import { KitforgeAuthProvider } from "@kitforge/auth/native";
+ * import { KitforgeAuthProvider } from "@ymjin/auth/native";
  * <KitforgeAuthProvider><App /></KitforgeAuthProvider>
  *
  * // A screen
- * import { Google } from "@kitforge/auth/providers";
- * import { useOAuth, useSession } from "@kitforge/auth/native";
+ * import { Google } from "@ymjin/auth/providers";
+ * import { useOAuth, useSession } from "@ymjin/auth/native";
  *
  * const google = Google({ clientId: GOOGLE_CLIENT_ID });
  * const { signIn } = useOAuth(google);

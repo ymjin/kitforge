@@ -15,15 +15,15 @@ web work and accepting weaker web accessibility.
 Keep **separate implementations per platform**, sharing the parts that must stay
 consistent:
 
-- **UI**: `@kitforge/ui` (web, React Aria) and `@kitforge/ui-native` (RN,
+- **UI**: `@ymjin/ui` (web, React Aria) and `@ymjin/ui-native` (RN,
   NativeWind) are separate packages with the **same prop API** (`variant`/`size`)
   and the **same tokens**. Events follow each platform (`onClick` vs `onPress`).
-- **Auth**: `@kitforge/auth/native` runs its own flow (expo-auth-session /
+- **Auth**: `@ymjin/auth/native` runs its own flow (expo-auth-session /
   expo-apple-authentication + secure-store) but **shares provider configs,
   `getUserInfo`, and the profile mappers** with the web build — so a Google/Apple
   user is identical across platforms.
-- **Maps**: `@kitforge/maps/{react,native}` behind one `<Map>`/`<Marker>` API;
-  `@kitforge/maps/ui` resolves per platform via `exports` conditions. Core types
+- **Maps**: `@ymjin/maps/{react,native}` behind one `<Map>`/`<Marker>` API;
+  `@ymjin/maps/ui` resolves per platform via `exports` conditions. Core types
   shared.
 
 ## Consequences

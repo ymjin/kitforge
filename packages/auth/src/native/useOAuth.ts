@@ -5,15 +5,15 @@
  *
  * The flow (system browser → deep-link redirect → PKCE code exchange) is
  * entirely native; only the *data* is shared with the web build — the provider
- * config (`@kitforge/auth/providers`), the `getUserInfo` profile fetch, and the
+ * config (`@ymjin/auth/providers`), the `getUserInfo` profile fetch, and the
  * `NormalizedProfile` shape. So a Google user is identical across platforms.
  *
  * Works for any standard PKCE provider (Google, Kakao). Apple is better served
  * by `expo-apple-authentication` (native sheet) — a separate follow-up.
  *
  * ```tsx
- * import { Google } from "@kitforge/auth/providers";
- * import { useOAuth } from "@kitforge/auth/native";
+ * import { Google } from "@ymjin/auth/providers";
+ * import { useOAuth } from "@ymjin/auth/native";
  *
  * const google = Google({ clientId: GOOGLE_CLIENT_ID });
  * function LoginScreen() {
@@ -78,7 +78,7 @@ export function useOAuth(provider: OAuthProvider, options: UseOAuthOptions = {})
     if (result.type === "cancel" || result.type === "dismiss") return null;
     if (result.type !== "success" || !result.params["code"]) {
       throw new Error(
-        `[@kitforge/auth] ${provider.id} sign-in failed: ${result.error?.message ?? result.type}`,
+        `[@ymjin/auth] ${provider.id} sign-in failed: ${result.error?.message ?? result.type}`,
       );
     }
 

@@ -10,9 +10,9 @@ apps). Each consumer needs only some of it (just tokens, or auth, or maps).
 
 ## Decision
 
-- A **pnpm + Turborepo monorepo** of independently published `@kitforge/*`
+- A **pnpm + Turborepo monorepo** of independently published `@ymjin/*`
   packages, each installable on its own.
-- **Public npm** under the `@kitforge` scope (`publishConfig.access: public`).
+- **Public npm** under the `@ymjin` scope (`publishConfig.access: public`).
 - **Changesets** for versioning + changelogs: each change adds a `.changeset/*.md`;
   `changeset version` bumps versions + writes per-package `CHANGELOG.md`;
   `changeset publish` releases.
@@ -20,7 +20,7 @@ apps). Each consumer needs only some of it (just tokens, or auth, or maps).
 
 ## Consequences
 
-- Consumers `npm i @kitforge/<pkg>` and tree-shake what they don't use.
+- Consumers `npm i @ymjin/<pkg>` and tree-shake what they don't use.
 - Release history lives in each package's `CHANGELOG.md`.
 - First release coordinated at **0.1.0** across all packages.
 - Internal deps use `workspace:*`, rewritten to real versions on publish

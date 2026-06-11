@@ -95,7 +95,7 @@ export function KitforgeAuthProvider({
 export function useKitforgeAuthContext(): KitforgeAuthContextValue {
   const ctx = useContext(AuthContext);
   if (!ctx) {
-    throw new Error("[@kitforge/auth] useSession / useOAuth must be used inside <KitforgeAuthProvider>.");
+    throw new Error("[@ymjin/auth] useSession / useOAuth must be used inside <KitforgeAuthProvider>.");
   }
   return ctx;
 }

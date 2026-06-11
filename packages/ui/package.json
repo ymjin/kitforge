@@ -1,7 +1,7 @@
 {
-  "name": "@kitforge/ui",
+  "name": "@ymjin/ui",
   "version": "0.1.0",
-  "description": "Accessible React components (React Aria) styled with @kitforge/tokens — consistent widgets across every browser.",
+  "description": "Accessible React components (React Aria) styled with @ymjin/tokens — consistent widgets across every browser.",
   "license": "MIT",
   "type": "module",
   "sideEffects": [
@@ -28,7 +28,7 @@
     "clean": "rm -rf dist .turbo"
   },
   "peerDependencies": {
-    "@kitforge/tokens": "workspace:*",
+    "@ymjin/tokens": "workspace:*",
     "react": ">=18.0.0",
     "react-aria-components": ">=1.2.0",
     "react-dom": ">=18.0.0"

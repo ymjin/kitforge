@@ -104,7 +104,7 @@ export function ToastProvider({ children, duration = 4000 }: ToastProviderProps)
 export function useToast(): ToastContextValue {
   const ctx = useContext(ToastContext);
   if (!ctx) {
-    throw new Error("[@kitforge/ui-native] useToast must be used inside a <ToastProvider>.");
+    throw new Error("[@ymjin/ui-native] useToast must be used inside a <ToastProvider>.");
   }
   return ctx;
 }

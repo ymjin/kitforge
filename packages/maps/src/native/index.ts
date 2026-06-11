@@ -1,7 +1,7 @@
 /**
- * @kitforge/maps/native — React Native bindings (react-native-maps).
+ * @ymjin/maps/native — React Native bindings (react-native-maps).
  *
- * Mirrors `@kitforge/maps/react` so the same `<Map>`/`<Marker>`/`<Polygon>`/
+ * Mirrors `@ymjin/maps/react` so the same `<Map>`/`<Marker>`/`<Polygon>`/
  * `<Polyline>` code runs on web and native. Providers: `GoogleMaps()` (Android
  * default; iOS via Google native setup) and `AppleMaps()` (iOS default).
  *
@@ -9,7 +9,7 @@
  * — not Expo Go. Naver is web-only for now (`NaverMaps()` throws on native).
  *
  * ```tsx
- * import { Map, Marker, Polygon, GoogleMaps, useCurrentPosition } from "@kitforge/maps/native";
+ * import { Map, Marker, Polygon, GoogleMaps, useCurrentPosition } from "@ymjin/maps/native";
  * ```
  */
 

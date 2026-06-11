@@ -16,7 +16,7 @@ export interface FileUploadProps {
   onSelect?: (files: File[]) => void;
   /**
    * Direct-upload hook. Return a signed `PUT` URL for a file and the component
-   * uploads it straight to storage — pair with `@kitforge/storage`'s
+   * uploads it straight to storage — pair with `@ymjin/storage`'s
    * `getSignedUrl(key, { method: "PUT" })` on your server.
    */
   getUploadUrl?: (file: File) => Promise<string>;

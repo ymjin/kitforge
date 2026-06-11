@@ -1,5 +1,5 @@
 import { Switch as RNSwitch, Text, View } from "react-native";
-import { color } from "@kitforge/tokens";
+import { color } from "@ymjin/tokens";
 import { cx } from "../utils/cx.js";
 
 export interface SwitchProps {
@@ -11,7 +11,7 @@ export interface SwitchProps {
 }
 
 /**
- * A toggle (React Native `Switch`) tinted with `@kitforge/tokens` colors —
+ * A toggle (React Native `Switch`) tinted with `@ymjin/tokens` colors —
  * importing the token JS values directly, since RN's `trackColor` needs a raw
  * color rather than a class.
  */

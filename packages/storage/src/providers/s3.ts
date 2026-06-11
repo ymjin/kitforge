@@ -13,7 +13,7 @@
  * @example
  * ```ts
  * import { S3Client } from "@aws-sdk/client-s3";
- * import { S3Storage } from "@kitforge/storage/providers";
+ * import { S3Storage } from "@ymjin/storage/providers";
  *
  * const client = new S3Client({ region: "ap-northeast-2" });
  * const storage = S3Storage({ client, bucket: "my-bucket" });
@@ -197,7 +197,7 @@ export function S3Storage(options: S3StorageOptions): StorageProvider {
  * @example
  * ```ts
  * import { S3Client } from "@aws-sdk/client-s3";
- * import { NaverCloudObjectStorage } from "@kitforge/storage/providers";
+ * import { NaverCloudObjectStorage } from "@ymjin/storage/providers";
  *
  * const client = new S3Client({
  *   region: "kr-standard",

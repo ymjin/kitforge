@@ -23,7 +23,7 @@ export interface TextFieldProps extends Omit<AriaTextFieldProps, "className"> {
 
 /**
  * A labelled text input (React Aria `TextField`) with description and error
- * slots, styled with `@kitforge/tokens`.
+ * slots, styled with `@ymjin/tokens`.
  */
 export function TextField({
   label,

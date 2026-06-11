@@ -37,7 +37,7 @@ export function AppleMaps(): NativeMapProvider {
  */
 export function NaverMaps(_options?: unknown): never {
   throw new Error(
-    "[@kitforge/maps] Naver Maps is not supported on native yet. " +
-      "Use @kitforge/maps/react (web) for Naver, or GoogleMaps()/AppleMaps() on native.",
+    "[@ymjin/maps] Naver Maps is not supported on native yet. " +
+      "Use @ymjin/maps/react (web) for Naver, or GoogleMaps()/AppleMaps() on native.",
   );
 }

@@ -12,7 +12,7 @@
  * them so later launches still have a name.
  *
  * ```tsx
- * import { useAppleAuth } from "@kitforge/auth/native";
+ * import { useAppleAuth } from "@ymjin/auth/native";
  *
  * const { signIn, isAvailable } = useAppleAuth();
  * {isAvailable && <Button title="Apple로 로그인" onPress={() => signIn()} />}
@@ -69,7 +69,7 @@ export function useAppleAuth(): UseAppleAuthResult {
     }
 
     if (!credential.identityToken) {
-      throw new Error("[@kitforge/auth] Apple sign-in returned no identityToken.");
+      throw new Error("[@ymjin/auth] Apple sign-in returned no identityToken.");
     }
 
     const name = joinName(credential.fullName);

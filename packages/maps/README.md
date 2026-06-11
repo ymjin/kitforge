@@ -1,4 +1,4 @@
-# @kitforge/maps
+# @ymjin/maps
 
 One React map interface over **Google Maps** and **Naver Maps**. Write your map
 once; switch providers by swapping one factory.
@@ -13,17 +13,17 @@ once; switch providers by swapping one factory.
 The same component code runs on both platforms — the bundler picks the build:
 
 ```
-@kitforge/maps            ← shared types + MapController contract + loadScript
-@kitforge/maps/providers  ← web providers: GoogleMaps, NaverMaps
-@kitforge/maps/react      ← web components (JS SDK + DOM)
-@kitforge/maps/native     ← React Native components (react-native-maps)
-@kitforge/maps/ui         ← platform-resolved: web → /react, RN (Metro) → /native
+@ymjin/maps            ← shared types + MapController contract + loadScript
+@ymjin/maps/providers  ← web providers: GoogleMaps, NaverMaps
+@ymjin/maps/react      ← web components (JS SDK + DOM)
+@ymjin/maps/native     ← React Native components (react-native-maps)
+@ymjin/maps/ui         ← platform-resolved: web → /react, RN (Metro) → /native
 ```
 
-Import from `@kitforge/maps/ui` and write once:
+Import from `@ymjin/maps/ui` and write once:
 
 ```tsx
-import { Map, Marker, GoogleMaps } from "@kitforge/maps/ui";
+import { Map, Marker, GoogleMaps } from "@ymjin/maps/ui";
 // web  → Google/Naver JS SDK
 // RN   → react-native-maps (Google/Apple)
 ```
@@ -47,8 +47,8 @@ features are reachable through each handle's `native` escape hatch.
 ## Usage
 
 ```tsx
-import { GoogleMaps } from "@kitforge/maps/providers";
-import { Map, Marker, Polygon, useCurrentPosition } from "@kitforge/maps/react";
+import { GoogleMaps } from "@ymjin/maps/providers";
+import { Map, Marker, Polygon, useCurrentPosition } from "@ymjin/maps/react";
 
 const google = GoogleMaps({ apiKey: import.meta.env.VITE_GMAPS_KEY });
 

@@ -9,7 +9,7 @@
  * @example
  * ```ts
  * // middleware.ts
- * import { createAuthMiddleware } from "@kitforge/auth/next";
+ * import { createAuthMiddleware } from "@ymjin/auth/next";
  * import { auth } from "@/lib/auth";
  *
  * export default createAuthMiddleware(auth, {

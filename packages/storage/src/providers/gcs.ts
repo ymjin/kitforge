@@ -7,7 +7,7 @@
  * @example
  * ```ts
  * import { Storage } from "@google-cloud/storage";
- * import { GoogleCloudStorage } from "@kitforge/storage/providers";
+ * import { GoogleCloudStorage } from "@ymjin/storage/providers";
  *
  * const bucket = new Storage().bucket("my-bucket");
  * const storage = GoogleCloudStorage(bucket);

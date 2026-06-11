@@ -1,7 +1,7 @@
 /**
- * Minimal ambient declarations so `@kitforge/ui-native` type-checks without
+ * Minimal ambient declarations so `@ymjin/ui-native` type-checks without
  * installing the React Native toolchain. The consumer's real `react-native`
- * (with NativeWind's `className` support) and `@kitforge/tokens` provide the
+ * (with NativeWind's `className` support) and `@ymjin/tokens` provide the
  * runtime. These only cover the surface this package touches.
  */
 
@@ -80,7 +80,7 @@ declare module "react-native" {
   export const Platform: { OS: "ios" | "android" | "windows" | "macos" | "web" };
 }
 
-declare module "@kitforge/tokens" {
+declare module "@ymjin/tokens" {
   /** The color scales (primary/neutral/success/warning/danger 50–900, white/black). */
   export const color: { [group: string]: any };
 }

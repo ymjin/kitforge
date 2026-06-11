@@ -41,8 +41,8 @@ export interface MapProps {
  * `<Marker>`, `<Polygon>`, `<Polyline>` as children; they attach to this map.
  *
  * ```tsx
- * import { GoogleMaps } from "@kitforge/maps/providers";
- * import { Map, Marker } from "@kitforge/maps/react";
+ * import { GoogleMaps } from "@ymjin/maps/providers";
+ * import { Map, Marker } from "@ymjin/maps/react";
  *
  * const google = GoogleMaps({ apiKey });
  * <Map provider={google} center={{ lat: 37.5665, lng: 126.978 }} zoom={12}>

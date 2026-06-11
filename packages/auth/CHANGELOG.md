@@ -1,4 +1,4 @@
-# @kitforge/auth
+# @ymjin/auth
 
 ## 0.1.0
 
@@ -6,7 +6,7 @@
 
 - b5e44bf: Add Apple Sign In provider + extend core for dynamic secrets and id_token profiles.
 
-  **`@kitforge/auth/providers` — Apple**
+  **`@ymjin/auth/providers` — Apple**
 
   - `client_secret`은 ES256(ECDSA P-256) JWT로 동적 생성 (`getClientSecret` 팩토리, Web Crypto)
   - userinfo 엔드포인트 없음 → `id_token` 페이로드에서 프로필 추출 (`fromIdToken: true`)
@@ -20,7 +20,7 @@
   - `OAuthProvider.userinfo.fromIdToken?: boolean` — 추가
   - `getUserInfo(provider, accessToken, tokens?)` — tokens 인자 추가 (optional, 하위 호환)
 
-- 89b21bc: Add external storage — `@kitforge/auth/adapters` (DB adapter + session store).
+- 89b21bc: Add external storage — `@ymjin/auth/adapters` (DB adapter + session store).
 
   두 가지 독립적인 외부 스토리지 연결을 추가합니다. 둘 다 **선택사항**이며,
   설정하지 않으면 기존 stateless JWT 쿠키 방식 그대로 동작합니다 (하위 호환).
@@ -37,30 +37,30 @@
   - **즉시 로그아웃 / 세션 무효화** 가능 (행 삭제)
   - 만료 세션 lazy 제거
 
-  **구현체** (`@kitforge/auth/adapters`):
+  **구현체** (`@ymjin/auth/adapters`):
 
   - `InMemoryAdapter` / `InMemorySessionStore` — 개발·테스트·데모
   - `SupabaseAdapter` / `SupabaseSessionStore` — 프로덕션 (소비자가 client 주입, SDK 미번들)
-  - `@kitforge/auth/adapters/schema.sql` — Supabase 테이블 스키마 (RLS 포함)
+  - `@ymjin/auth/adapters/schema.sql` — Supabase 테이블 스키마 (RLS 포함)
 
   **core 추가** (하위 호환):
 
-  - `AuthAdapter`, `AdapterUser`, `AdapterAccount`, `SessionStore`, `SessionUser` 인터페이스 (`@kitforge/auth`에서 import 가능)
+  - `AuthAdapter`, `AdapterUser`, `AdapterAccount`, `SessionStore`, `SessionUser` 인터페이스 (`@ymjin/auth`에서 import 가능)
   - `KitforgeAuthConfig.adapter`, `KitforgeAuthConfig.sessionStore` 옵션
   - `KitforgeAuth.getSessionByCookieValue()`, `deleteStoredSession()` — Next.js 어댑터 연동
   - Next.js `auth()` / `signOut()`가 세션 스토어 인지하도록 갱신
 
-- 6fc30e0: Add `@kitforge/auth` with a framework-agnostic OAuth 2.0 + PKCE core and the
+- 6fc30e0: Add `@ymjin/auth` with a framework-agnostic OAuth 2.0 + PKCE core and the
   Google provider. Exposes `createAuthorizationUrl`, `exchangeCode`,
   `refreshTokens`, and `getUserInfo` from the root, and the `Google` factory from
-  `@kitforge/auth/providers`. Client secrets are injected by the consumer and
+  `@ymjin/auth/providers`. Client secrets are injected by the consumer and
   never bundled.
 - 88d3a59: Add Kakao and Naver OAuth 2.0 providers.
 
   - `Kakao`: PKCE 지원, clientSecret 선택사항, `kakao_account` 중첩 구조 정규화
   - `Naver`: PKCE 미지원(state로 CSRF 방어), clientSecret 필수 강제(미전달 시 즉시 에러)
 
-- 627c67f: Add native Sign in with Apple — `useAppleAuth` in `@kitforge/auth/native`.
+- 627c67f: Add native Sign in with Apple — `useAppleAuth` in `@ymjin/auth/native`.
 
   `expo-apple-authentication`의 **네이티브 시트**를 사용합니다 (OAuth/PKCE 브라우저
   흐름이 아님). Apple이 서명한 `identityToken`을 직접 반환 — 코드 교환 없음.
@@ -74,7 +74,7 @@
 
   11개 스모크 테스트 통과 (availability, signIn 프로필/토큰/영속화, 취소, 안드로이드 미지원).
 
-- 4cd1f31: Add `@kitforge/auth/native` — React Native (Expo) auth.
+- 4cd1f31: Add `@ymjin/auth/native` — React Native (Expo) auth.
 
   웹과 **흐름은 분리, 데이터는 공유**합니다. 네이티브 로그인 흐름(expo-auth-session +
   expo-secure-store)은 완전히 새로 작성하되, provider 설정·`getUserInfo`·
@@ -100,9 +100,9 @@
 
   내부 개선: auth `tsconfig.json`에 `jsx: react-jsx` 추가(자동 런타임) — tsup 빌드 시 모든 .tsx 진입점이 올바르게 번들됨.
 
-- bf6c822: Add `@kitforge/auth/next` — Next.js App Router adapter.
+- bf6c822: Add `@ymjin/auth/next` — Next.js App Router adapter.
 
-  `@kitforge/auth/node` 위에 Next.js 전용 API를 추가합니다:
+  `@ymjin/auth/node` 위에 Next.js 전용 API를 추가합니다:
 
   | API                                | 설명                                                                        |
   | ---------------------------------- | --------------------------------------------------------------------------- |
@@ -116,7 +116,7 @@
   - 기본 `basePath`: `/api/auth` (node 어댑터 `/auth`와 구분)
   - `next >= 14.0.0` peerDependency (optional)
 
-- 594f58d: Add `@kitforge/auth/node` — generic Web API-based adapter.
+- 594f58d: Add `@ymjin/auth/node` — generic Web API-based adapter.
 
   Web API (`Request`/`Response`) 기반이라 Node 18+, Hono, Express, Fastify,
   Next.js Route Handlers, Cloudflare Workers, Bun, Deno 등 어디서나 동일하게
@@ -138,7 +138,7 @@
 
   **`jose`** 런타임 의존성으로 추가.
 
-- 1e46aa0: Add `@kitforge/auth/react` — React SPA adapter.
+- 1e46aa0: Add `@ymjin/auth/react` — React SPA adapter.
 
   서버 어댑터(`/node`, `/next`)와 함께 사용하는 클라이언트 사이드 React 레이어입니다.
 

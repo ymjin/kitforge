@@ -37,7 +37,7 @@ declare global {
  */
 export function loadScript(url: string, options: LoadScriptOptions = {}): Promise<void> {
   if (typeof document === "undefined") {
-    return Promise.reject(new Error("[@kitforge/maps] loadScript requires a browser environment."));
+    return Promise.reject(new Error("[@ymjin/maps] loadScript requires a browser environment."));
   }
 
   const existing = inflight.get(url);
@@ -70,7 +70,7 @@ export function loadScript(url: string, options: LoadScriptOptions = {}): Promis
     script.onerror = () => {
       cleanupCallback?.();
       inflight.delete(url);
-      reject(new Error(`[@kitforge/maps] Failed to load SDK script: ${url}`));
+      reject(new Error(`[@ymjin/maps] Failed to load SDK script: ${url}`));
     };
 
     if (!callbackParam) {
@@ -81,7 +81,7 @@ export function loadScript(url: string, options: LoadScriptOptions = {}): Promis
           if (isReady()) return resolve();
           if (Date.now() - started > timeoutMs) {
             inflight.delete(url);
-            return reject(new Error(`[@kitforge/maps] SDK global not ready after load: ${url}`));
+            return reject(new Error(`[@ymjin/maps] SDK global not ready after load: ${url}`));
           }
           setTimeout(tick, pollIntervalMs);
         };

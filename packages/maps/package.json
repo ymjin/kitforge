@@ -1,5 +1,5 @@
 {
-  "name": "@kitforge/maps",
+  "name": "@ymjin/maps",
   "version": "0.1.0",
   "description": "One React map interface over Google Maps and Naver Maps — markers, polygons, polylines, and current-location tracking.",
   "license": "MIT",

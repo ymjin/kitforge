@@ -1,16 +1,16 @@
-# @kitforge/storage
+# @ymjin/storage
 
 ## 0.1.0
 
 ### Minor Changes
 
-- 25704c0: Add `@kitforge/storage` — one object-storage interface, many backends.
+- 25704c0: Add `@ymjin/storage` — one object-storage interface, many backends.
 
   공통 `StorageProvider` 인터페이스(put · get · delete · exists · list ·
   getSignedUrl · getPublicUrl) 위에 provider별 구현을 제공합니다. 호출부는
   provider 교체와 무관하게 동일합니다.
 
-  **Providers** (`@kitforge/storage/providers`):
+  **Providers** (`@ymjin/storage/providers`):
 
   - `GoogleCloudStorage(bucket)` — `@google-cloud/storage` Bucket 주입
   - `S3Storage({ client, bucket })` — `@aws-sdk/client-s3` 주입 (R2·MinIO 등 호환)

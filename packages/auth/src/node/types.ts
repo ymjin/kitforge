@@ -63,7 +63,7 @@ export interface KitforgeAuthConfig {
    * Optional database adapter. When set, each sign-in upserts a user + links
    * the provider account, and the session `user.id` becomes your DB id.
    *
-   * Use `SupabaseAdapter` / `InMemoryAdapter` from `@kitforge/auth/adapters`,
+   * Use `SupabaseAdapter` / `InMemoryAdapter` from `@ymjin/auth/adapters`,
    * or implement {@link AuthAdapter} yourself.
    */
   adapter?: AuthAdapter;
@@ -74,7 +74,7 @@ export interface KitforgeAuthConfig {
    * used (the default).
    *
    * Use `SupabaseSessionStore` / `InMemorySessionStore` from
-   * `@kitforge/auth/adapters`, or implement {@link SessionStore} yourself.
+   * `@ymjin/auth/adapters`, or implement {@link SessionStore} yourself.
    */
   sessionStore?: SessionStore;
 }

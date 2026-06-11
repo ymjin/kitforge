@@ -1,5 +1,5 @@
 /**
- * @kitforge/tokens — the single source of truth for every design value.
+ * @ymjin/tokens — the single source of truth for every design value.
  *
  * One definition, three outputs:
  *   ① this TS/JS module (import the objects directly)

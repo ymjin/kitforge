@@ -1,19 +1,19 @@
-# @kitforge/maps
+# @ymjin/maps
 
 ## 0.1.0
 
 ### Minor Changes
 
-- 5e77dc6: Add `@kitforge/maps` — one React map interface over Google Maps and Naver Maps.
+- 5e77dc6: Add `@ymjin/maps` — one React map interface over Google Maps and Naver Maps.
 
   공통 `MapProvider`/`MapController` 계약 위에 provider별 SDK 어댑터를 두어, provider만
   바꾸면 같은 코드로 구글/네이버 지도를 전환합니다.
 
   **구성**:
 
-  - `@kitforge/maps` — 코어 타입(LatLng·MapOptions·Marker·Polygon 등) + `MapController` 계약 + `loadScript` SDK 로더(URL 중복 제거)
-  - `@kitforge/maps/providers` — `GoogleMaps({ apiKey })`, `NaverMaps({ ncpKeyId })`
-  - `@kitforge/maps/react` — `<Map>`, `<Marker>`, `<Polygon>`, `<Polyline>`, `useCurrentPosition`(GPS)
+  - `@ymjin/maps` — 코어 타입(LatLng·MapOptions·Marker·Polygon 등) + `MapController` 계약 + `loadScript` SDK 로더(URL 중복 제거)
+  - `@ymjin/maps/providers` — `GoogleMaps({ apiKey })`, `NaverMaps({ ncpKeyId })`
+  - `@ymjin/maps/react` — `<Map>`, `<Marker>`, `<Polygon>`, `<Polyline>`, `useCurrentPosition`(GPS)
 
   **특징**:
 
@@ -25,13 +25,13 @@
 
   34개 스모크 테스트 통과 (로더 dedup/callback/polling, 구글·네이버 어댑터 가짜 SDK 검증, React Map/Marker/useCurrentPosition jsdom 렌더).
 
-- caf15d4: Add React Native support — `@kitforge/maps/native` + cross-platform `@kitforge/maps/ui`.
+- caf15d4: Add React Native support — `@ymjin/maps/native` + cross-platform `@ymjin/maps/ui`.
 
   같은 `<Map>`/`<Marker>`/`<Polygon>`/`<Polyline>` 코드를 웹과 React Native 양쪽에서
-  사용합니다. `@kitforge/maps/ui`로 import하면 번들러가 플랫폼별 구현을 자동 선택합니다
+  사용합니다. `@ymjin/maps/ui`로 import하면 번들러가 플랫폼별 구현을 자동 선택합니다
   (웹→`/react`, Metro→`/native`, `exports` 조건 사용).
 
-  **`@kitforge/maps/native`** (react-native-maps 래핑):
+  **`@ymjin/maps/native`** (react-native-maps 래핑):
 
   - `GoogleMaps()`(Android 기본/iOS Google 설정) · `AppleMaps()`(iOS 기본)
   - `<Map>`은 zoom↔region delta 변환, onPress→onClick, onRegionChangeComplete→center/zoom

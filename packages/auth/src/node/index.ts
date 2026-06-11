@@ -1,5 +1,5 @@
 /**
- * @kitforge/auth/node — generic Node.js adapter.
+ * @ymjin/auth/node — generic Node.js adapter.
  *
  * Built on Web API (`Request` / `Response`) so it works anywhere Node 18+ is
  * available: plain HTTP servers, Express, Fastify, Hono, Next.js Route
@@ -17,8 +17,8 @@
  * ## Usage
  *
  * ```ts
- * import { createKitforgeAuth } from "@kitforge/auth/node";
- * import { Google, Kakao, Naver, Apple } from "@kitforge/auth/providers";
+ * import { createKitforgeAuth } from "@ymjin/auth/node";
+ * import { Google, Kakao, Naver, Apple } from "@ymjin/auth/providers";
  *
  * export const auth = createKitforgeAuth({
  *   providers: [

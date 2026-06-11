@@ -1,4 +1,4 @@
-# @kitforge/storage
+# @ymjin/storage
 
 One object-storage interface for many backends. Swap providers without touching
 call sites.
@@ -35,8 +35,8 @@ kitforge never bundles a cloud SDK and never holds your secrets.
 
 ```ts
 import { S3Client } from "@aws-sdk/client-s3";
-import { S3Storage } from "@kitforge/storage/providers";
-import type { StorageProvider } from "@kitforge/storage";
+import { S3Storage } from "@ymjin/storage/providers";
+import type { StorageProvider } from "@ymjin/storage";
 
 const storage: StorageProvider = S3Storage({
   client: new S3Client({ region: "ap-northeast-2" }),

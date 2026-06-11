@@ -10,7 +10,7 @@
  * @example
  * ```ts
  * import { createClient } from "@supabase/supabase-js";
- * import { SupabaseAdapter, SupabaseSessionStore } from "@kitforge/auth/adapters";
+ * import { SupabaseAdapter, SupabaseSessionStore } from "@ymjin/auth/adapters";
  *
  * const supabase = createClient(
  *   process.env.SUPABASE_URL!,
@@ -99,7 +99,7 @@ export function SupabaseAdapter(
         .eq("provider", provider)
         .eq("provider_account_id", providerAccountId)
         .maybeSingle();
-      if (accErr) throw new Error(`[@kitforge/auth] Supabase getUserByAccount: ${accErr.message}`);
+      if (accErr) throw new Error(`[@ymjin/auth] Supabase getUserByAccount: ${accErr.message}`);
       if (!account) return null;
 
       const { data: user, error: userErr } = await client
@@ -107,7 +107,7 @@ export function SupabaseAdapter(
         .select("*")
         .eq("id", (account as { user_id: string }).user_id)
         .maybeSingle();
-      if (userErr) throw new Error(`[@kitforge/auth] Supabase getUserByAccount: ${userErr.message}`);
+      if (userErr) throw new Error(`[@ymjin/auth] Supabase getUserByAccount: ${userErr.message}`);
       return user ? rowToUser(user as UserRow) : null;
     },
 
@@ -122,7 +122,7 @@ export function SupabaseAdapter(
         })
         .select("*")
         .single();
-      if (error) throw new Error(`[@kitforge/auth] Supabase createUser: ${error.message}`);
+      if (error) throw new Error(`[@ymjin/auth] Supabase createUser: ${error.message}`);
       return rowToUser(data as UserRow);
     },
 
@@ -137,7 +137,7 @@ export function SupabaseAdapter(
         expires_at:          account.expiresAt ?? null,
         scope:               account.scope ?? null,
       });
-      if (error) throw new Error(`[@kitforge/auth] Supabase linkAccount: ${error.message}`);
+      if (error) throw new Error(`[@ymjin/auth] Supabase linkAccount: ${error.message}`);
     },
 
     async getUser(id: string) {
@@ -146,7 +146,7 @@ export function SupabaseAdapter(
         .select("*")
         .eq("id", id)
         .maybeSingle();
-      if (error) throw new Error(`[@kitforge/auth] Supabase getUser: ${error.message}`);
+      if (error) throw new Error(`[@ymjin/auth] Supabase getUser: ${error.message}`);
       return data ? rowToUser(data as UserRow) : null;
     },
 
@@ -163,7 +163,7 @@ export function SupabaseAdapter(
         .eq("id", id)
         .select("*")
         .single();
-      if (error) throw new Error(`[@kitforge/auth] Supabase updateUser: ${error.message}`);
+      if (error) throw new Error(`[@ymjin/auth] Supabase updateUser: ${error.message}`);
       return rowToUser(data as UserRow);
     },
   };
@@ -191,7 +191,7 @@ export function SupabaseSessionStore(
         .select("*")
         .eq("id", sessionId)
         .maybeSingle();
-      if (error) throw new Error(`[@kitforge/auth] Supabase session get: ${error.message}`);
+      if (error) throw new Error(`[@ymjin/auth] Supabase session get: ${error.message}`);
       if (!data) return null;
 
       const row = data as SessionRow;
@@ -209,12 +209,12 @@ export function SupabaseSessionStore(
         data:       session,
         expires_at: session.expiresAt,
       });
-      if (error) throw new Error(`[@kitforge/auth] Supabase session set: ${error.message}`);
+      if (error) throw new Error(`[@ymjin/auth] Supabase session set: ${error.message}`);
     },
 
     async delete(sessionId: string) {
       const { error } = await client.from(sessionsTable).delete().eq("id", sessionId);
-      if (error) throw new Error(`[@kitforge/auth] Supabase session delete: ${error.message}`);
+      if (error) throw new Error(`[@ymjin/auth] Supabase session delete: ${error.message}`);
     },
   };
 }

@@ -151,7 +151,7 @@ export interface AdapterAccount {
  * Persists users and their linked provider accounts to your database.
  *
  * Implement this (or use `SupabaseAdapter` / `InMemoryAdapter` from
- * `@kitforge/auth/adapters`) and pass it as `config.adapter`. When present,
+ * `@ymjin/auth/adapters`) and pass it as `config.adapter`. When present,
  * the session's `user.id` becomes your database id rather than the provider sub.
  */
 export interface AuthAdapter {
@@ -177,7 +177,7 @@ export interface AuthAdapter {
  * Enables instant logout and session invalidation (delete the row), at the
  * cost of a storage lookup per request. Implement this (or use
  * `SupabaseSessionStore` / `InMemorySessionStore` from
- * `@kitforge/auth/adapters`) and pass it as `config.sessionStore`.
+ * `@ymjin/auth/adapters`) and pass it as `config.sessionStore`.
  *
  * When omitted, kitforge uses stateless signed-JWT cookies (the default).
  */

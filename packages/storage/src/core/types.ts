@@ -56,7 +56,7 @@ export interface SignedUrlOptions {
 /**
  * A pluggable object-storage backend.
  *
- * Implementations live in `@kitforge/storage/providers`; the contract is here
+ * Implementations live in `@ymjin/storage/providers`; the contract is here
  * so you can also write your own against any storage system.
  */
 export interface StorageProvider {

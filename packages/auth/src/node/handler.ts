@@ -51,7 +51,7 @@ export class KitforgeAuth {
   constructor(config: KitforgeAuthConfig) {
     if (config.secret.length < 32) {
       throw new Error(
-        "[@kitforge/auth] `secret` must be at least 32 characters. " +
+        "[@ymjin/auth] `secret` must be at least 32 characters. " +
           "Generate one with: openssl rand -base64 32",
       );
     }

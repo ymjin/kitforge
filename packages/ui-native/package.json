@@ -1,7 +1,7 @@
 {
-  "name": "@kitforge/ui-native",
+  "name": "@ymjin/ui-native",
   "version": "0.1.0",
-  "description": "React Native components styled with @kitforge/tokens via NativeWind — the native counterpart to @kitforge/ui.",
+  "description": "React Native components styled with @ymjin/tokens via NativeWind — the native counterpart to @ymjin/ui.",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -25,7 +25,7 @@
     "clean": "rm -rf dist .turbo"
   },
   "peerDependencies": {
-    "@kitforge/tokens": "workspace:*",
+    "@ymjin/tokens": "workspace:*",
     "@react-native-community/datetimepicker": ">=7.0.0",
     "@react-native-community/slider": ">=4.0.0",
     "nativewind": ">=4.0.0",

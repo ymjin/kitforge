@@ -1,4 +1,4 @@
-# @kitforge/ui
+# @ymjin/ui
 
 ## 0.1.0
 
@@ -10,9 +10,9 @@
   `<I18nProvider locale="ko-KR">`로 감싸면 한국어 월·요일 이름이 표시됩니다
   (2026년 6월, 일·월·화…). 기존 `.kf-calendar*` 스타일 재사용 + standalone 래퍼.
 
-- a46e937: Add `@kitforge/ui` — accessible React components (React Aria) styled with `@kitforge/tokens`.
+- a46e937: Add `@ymjin/ui` — accessible React components (React Aria) styled with `@ymjin/tokens`.
 
-  접근성·키보드·포커스 로직은 React Aria가, 외형은 `@kitforge/tokens` CSS 변수가
+  접근성·키보드·포커스 로직은 React Aria가, 외형은 `@ymjin/tokens` CSS 변수가
   담당합니다. 브라우저·OS 편차 없이 동일한 위젯을 제공합니다.
 
   **Phase 1 컴포넌트** (7종):
@@ -27,13 +27,13 @@
 
   **설정**:
 
-  - 스타일은 `@kitforge/ui/styles.css` + `@kitforge/tokens/css`를 앱 루트에서 import
+  - 스타일은 `@ymjin/ui/styles.css` + `@ymjin/tokens/css`를 앱 루트에서 import
   - 한국어 날짜는 `<I18nProvider locale="ko-KR">`로 감싸기 (RAC에서 re-export)
-  - peerDependency: `@kitforge/tokens` · `react` · `react-dom` · `react-aria-components`
+  - peerDependency: `@ymjin/tokens` · `react` · `react-dom` · `react-aria-components`
 
   41개 테스트 통과 (SSR 렌더 33 + Modal jsdom 클라이언트 렌더 8).
 
-- 7ebb352: Add `@kitforge/ui` Phase 2 — 16 components across form, overlay, integration, and display.
+- 7ebb352: Add `@ymjin/ui` Phase 2 — 16 components across form, overlay, integration, and display.
 
   **폼 완성** (React Aria):
 
@@ -45,16 +45,16 @@
 
   **패키지 연동**:
 
-  - `FileUpload` — `@kitforge/storage` Signed PUT URL 직업로드 연동 (`getUploadUrl` → 서버 거치지 않고 스토리지 직접 업로드)
-  - `Avatar` — `@kitforge/auth` 세션 user 연동 (`user` prop), 이미지 실패 시 이니셜 폴백 (한국어 이름 지원)
+  - `FileUpload` — `@ymjin/storage` Signed PUT URL 직업로드 연동 (`getUploadUrl` → 서버 거치지 않고 스토리지 직접 업로드)
+  - `Avatar` — `@ymjin/auth` 세션 user 연동 (`user` prop), 이미지 실패 시 이니셜 폴백 (한국어 이름 지원)
 
   **표시용 기본**:
 
   - `Badge` · `Card`(+Header/Body/Footer) · `Spinner` · `Skeleton`
 
-  모두 `@kitforge/tokens` CSS 변수로 스타일링. 88개 테스트 통과 (SSR 렌더 + jsdom 클라이언트 렌더로 portal 컴포넌트 검증).
+  모두 `@ymjin/tokens` CSS 변수로 스타일링. 88개 테스트 통과 (SSR 렌더 + jsdom 클라이언트 렌더로 portal 컴포넌트 검증).
 
-- 2367f22: Add `@kitforge/ui` Phase 3 — navigation & data components.
+- 2367f22: Add `@ymjin/ui` Phase 3 — navigation & data components.
 
   - `Tabs` + `TabList` · `Tab` · `TabPanel` — 키보드 탐색 탭
   - `Accordion` + `AccordionItem` — React Aria `DisclosureGroup` 기반, 다중/단일 확장
@@ -62,7 +62,7 @@
   - `Table` + `TableHeader` · `TableBody` · `Column` · `Row` · `Cell` — 정렬·행 선택·키보드 탐색
   - `Pagination` — 페이지 범위 + 생략부호(…) 로직, 직접 구현 (headless 불필요)
 
-  모두 `@kitforge/tokens` CSS 변수로 스타일링. 28개 테스트 통과 (Tabs·Table·Pagination SSR 렌더 17 + Accordion·DropdownMenu jsdom 상호작용 11).
+  모두 `@ymjin/tokens` CSS 변수로 스타일링. 28개 테스트 통과 (Tabs·Table·Pagination SSR 렌더 17 + Accordion·DropdownMenu jsdom 상호작용 11).
 
 - 086ad8b: Add `Progress` and `SearchField` (React Aria).
 
@@ -78,4 +78,4 @@
   background looked offset. The cell now flex-centers its content, aligning the
   background with the number exactly.
 - Updated dependencies [3b821c7]
-  - @kitforge/tokens@0.1.0
+  - @ymjin/tokens@0.1.0

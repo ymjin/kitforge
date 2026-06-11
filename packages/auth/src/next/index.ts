@@ -1,7 +1,7 @@
 /**
- * @kitforge/auth/next — Next.js App Router adapter.
+ * @ymjin/auth/next — Next.js App Router adapter.
  *
- * Wraps `@kitforge/auth/node` and adds:
+ * Wraps `@ymjin/auth/node` and adds:
  *   - `handlers`   — Route Handler exports for `app/api/auth/[...kitforge]/route.ts`
  *   - `auth()`     — read the current session in Server Components / Server Actions
  *   - `signIn()`   — redirect to a provider's sign-in URL (Server Action / Server Component)
@@ -15,8 +15,8 @@
  *
  * ```ts
  * // lib/auth.ts
- * import { createNextAuth } from "@kitforge/auth/next";
- * import { Google, Kakao, Naver, Apple } from "@kitforge/auth/providers";
+ * import { createNextAuth } from "@ymjin/auth/next";
+ * import { Google, Kakao, Naver, Apple } from "@ymjin/auth/providers";
  *
  * export const auth = createNextAuth({
  *   providers: [
@@ -59,7 +59,7 @@
  *
  * ```ts
  * // middleware.ts
- * import { createAuthMiddleware } from "@kitforge/auth/next";
+ * import { createAuthMiddleware } from "@ymjin/auth/next";
  * import { auth } from "@/lib/auth";
  *
  * export default createAuthMiddleware(auth, {

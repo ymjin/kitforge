@@ -1,5 +1,5 @@
 /**
- * Web target of `@kitforge/maps/ui`. Bundlers resolve `./ui` here on the
+ * Web target of `@ymjin/maps/ui`. Bundlers resolve `./ui` here on the
  * browser; React Native (Metro) resolves to `ui-native` instead. Re-exports the
  * web components and the web providers so one import works cross-platform.
  */

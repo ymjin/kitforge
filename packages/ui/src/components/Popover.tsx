@@ -11,7 +11,7 @@ import { cx } from "../utils/cx.js";
 export interface PopoverProps extends Pick<AriaPopoverProps, "placement"> {
   /**
    * The element that opens the popover — must be a focusable React Aria
-   * trigger, typically a `<Button>` from `@kitforge/ui`.
+   * trigger, typically a `<Button>` from `@ymjin/ui`.
    */
   trigger: ReactNode;
   children: ReactNode;

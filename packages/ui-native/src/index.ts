@@ -1,29 +1,29 @@
 /**
- * @kitforge/ui-native — React Native components styled with @kitforge/tokens
+ * @ymjin/ui-native — React Native components styled with @ymjin/tokens
  * via NativeWind.
  *
- * Mirrors `@kitforge/ui`'s `variant`/`size` API so the mental model transfers
+ * Mirrors `@ymjin/ui`'s `variant`/`size` API so the mental model transfers
  * web ↔ native (events use RN's `onPress`/`onValueChange`). The styling is
- * NativeWind classes resolved through the SAME `@kitforge/tokens` Tailwind
+ * NativeWind classes resolved through the SAME `@ymjin/tokens` Tailwind
  * preset the web build uses — so `bg-primary-500` is the same value everywhere.
  *
  * ## Setup
  *
  * ```bash
- * npm i @kitforge/ui-native @kitforge/tokens nativewind react-native
+ * npm i @ymjin/ui-native @ymjin/tokens nativewind react-native
  * ```
  * ```js
  * // tailwind.config.js
  * module.exports = {
- *   presets: [require("nativewind/preset"), require("@kitforge/tokens/tailwind")],
- *   content: ["./node_modules/@kitforge/ui-native/dist/**\/*.js", "./app/**\/*.{tsx,jsx}"],
+ *   presets: [require("nativewind/preset"), require("@ymjin/tokens/tailwind")],
+ *   content: ["./node_modules/@ymjin/ui-native/dist/**\/*.js", "./app/**\/*.{tsx,jsx}"],
  * };
  * ```
  * Add `nativewind/babel` to your Babel config and import your `global.css`
  * (NativeWind v4). Then:
  *
  * ```tsx
- * import { Button, TextField, Switch } from "@kitforge/ui-native";
+ * import { Button, TextField, Switch } from "@ymjin/ui-native";
  * <Button variant="primary" onPress={save}>저장</Button>
  * ```
  *

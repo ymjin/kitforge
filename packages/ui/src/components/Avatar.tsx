@@ -3,7 +3,7 @@ import { cx } from "../utils/cx.js";
 
 export type AvatarSize = "sm" | "md" | "lg" | "xl";
 
-/** Shape compatible with `@kitforge/auth`'s session `user`. */
+/** Shape compatible with `@ymjin/auth`'s session `user`. */
 export interface AvatarUser {
   name?: string;
   email?: string;
@@ -18,7 +18,7 @@ export interface AvatarProps {
   /** Size preset. Default: `"md"`. */
   size?: AvatarSize;
   /**
-   * Convenience: pass an `@kitforge/auth` session user directly.
+   * Convenience: pass an `@ymjin/auth` session user directly.
    * ```tsx
    * const { session } = useSession();
    * <Avatar user={session?.user} />
@@ -30,7 +30,7 @@ export interface AvatarProps {
 
 /**
  * A user avatar with graceful fallback to initials when no image is set or the
- * image fails to load. Integrates with `@kitforge/auth` via the `user` prop.
+ * image fails to load. Integrates with `@ymjin/auth` via the `user` prop.
  */
 export function Avatar({ src, name, size = "md", user, className }: AvatarProps) {
   const [errored, setErrored] = useState(false);

@@ -13,7 +13,7 @@ export interface ButtonProps extends Omit<AriaButtonProps, "className"> {
 }
 
 /**
- * A button built on React Aria, styled with `@kitforge/tokens`.
+ * A button built on React Aria, styled with `@ymjin/tokens`.
  *
  * Handles press/hover/focus-visible/disabled states with correct accessibility
  * and keyboard behavior across every browser.

@@ -70,7 +70,7 @@ export class InMemoryAdapter implements AuthAdapter {
     data: Partial<Omit<AdapterUser, "id">>,
   ): Promise<AdapterUser> {
     const existing = this.users.get(id);
-    if (!existing) throw new Error(`[@kitforge/auth] InMemoryAdapter: no user ${id}`);
+    if (!existing) throw new Error(`[@ymjin/auth] InMemoryAdapter: no user ${id}`);
     const updated = { ...existing, ...data, id };
     this.users.set(id, updated);
     return updated;

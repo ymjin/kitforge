@@ -6,7 +6,7 @@
  *
  * @example
  * ```ts
- * import { GoogleMaps } from "@kitforge/maps/providers";
+ * import { GoogleMaps } from "@ymjin/maps/providers";
  * const google = GoogleMaps({ apiKey: import.meta.env.VITE_GOOGLE_MAPS_KEY });
  * ```
  */
@@ -38,7 +38,7 @@ export interface GoogleMapsOptions {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function gmaps(): any {
   const g = (globalThis as any).google;
-  if (!g?.maps) throw new Error("[@kitforge/maps] Google Maps SDK not loaded. Call provider.load() first.");
+  if (!g?.maps) throw new Error("[@ymjin/maps] Google Maps SDK not loaded. Call provider.load() first.");
   return g.maps;
 }
 

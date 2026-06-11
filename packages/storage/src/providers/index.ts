@@ -2,10 +2,10 @@
  * Storage providers. Import the one you need and pass your own client/config:
  *
  * ```ts
- * import { SupabaseStorage } from "@kitforge/storage/providers";
- * import { GoogleCloudStorage } from "@kitforge/storage/providers";
- * import { S3Storage, NaverCloudObjectStorage } from "@kitforge/storage/providers";
- * import { MemoryStorage, LocalStorage } from "@kitforge/storage/providers";
+ * import { SupabaseStorage } from "@ymjin/storage/providers";
+ * import { GoogleCloudStorage } from "@ymjin/storage/providers";
+ * import { S3Storage, NaverCloudObjectStorage } from "@ymjin/storage/providers";
+ * import { MemoryStorage, LocalStorage } from "@ymjin/storage/providers";
  * ```
  *
  * All implement the same `StorageProvider` contract, so call sites are

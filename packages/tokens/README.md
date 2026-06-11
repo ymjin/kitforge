@@ -1,10 +1,10 @@
-# @kitforge/tokens
+# @ymjin/tokens
 
 Design tokens — colors, spacing, borders, typography, and shadows — defined
 once and emitted in three shapes so every project sees the same values.
 
 ```bash
-npm i @kitforge/tokens
+npm i @ymjin/tokens
 ```
 
 ## One source, three outputs
@@ -12,7 +12,7 @@ npm i @kitforge/tokens
 ### ① TS / JS
 
 ```ts
-import { color, spacing, radius } from "@kitforge/tokens";
+import { color, spacing, radius } from "@ymjin/tokens";
 
 color.primary[500]; // "#2f66f6"
 spacing[4];         // "1rem"
@@ -22,7 +22,7 @@ radius.md;          // "0.375rem"
 ### ② CSS custom properties
 
 ```css
-@import "@kitforge/tokens/css";
+@import "@ymjin/tokens/css";
 
 .button {
   background: var(--kf-color-primary-500);
@@ -36,7 +36,7 @@ radius.md;          // "0.375rem"
 ```js
 // tailwind.config.js
 module.exports = {
-  presets: [require("@kitforge/tokens/tailwind")],
+  presets: [require("@ymjin/tokens/tailwind")],
 };
 ```
 

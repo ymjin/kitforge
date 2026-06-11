@@ -7,7 +7,7 @@
  *
  * @example
  * ```ts
- * import { Google } from "@kitforge/auth/providers";
+ * import { Google } from "@ymjin/auth/providers";
  * const google = Google({ clientId: process.env.GOOGLE_CLIENT_ID! });
  * ```
  */

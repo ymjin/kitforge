@@ -17,7 +17,7 @@ async function loadSecureStore(): Promise<typeof import("expo-secure-store")> {
     return await import("expo-secure-store");
   } catch {
     throw new Error(
-      "[@kitforge/auth] The default native storage needs 'expo-secure-store'. " +
+      "[@ymjin/auth] The default native storage needs 'expo-secure-store'. " +
         "Install it, or pass your own `storage` to <KitforgeAuthProvider>.",
     );
   }

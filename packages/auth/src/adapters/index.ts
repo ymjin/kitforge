@@ -1,5 +1,5 @@
 /**
- * @kitforge/auth/adapters — external storage implementations.
+ * @ymjin/auth/adapters — external storage implementations.
  *
  * Two orthogonal concerns, each optional:
  *
@@ -17,7 +17,7 @@
  * The interfaces themselves live in the core entry so you can implement your
  * own against any database:
  * ```ts
- * import type { AuthAdapter, SessionStore } from "@kitforge/auth";
+ * import type { AuthAdapter, SessionStore } from "@ymjin/auth";
  * ```
  */
 
@@ -32,7 +32,7 @@ export type {
   SupabaseSessionStoreOptions,
 } from "./supabase.js";
 
-// Re-export the contracts so `@kitforge/auth/adapters` is self-contained.
+// Re-export the contracts so `@ymjin/auth/adapters` is self-contained.
 export type {
   AuthAdapter,
   AdapterUser,

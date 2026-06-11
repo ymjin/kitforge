@@ -1,7 +1,7 @@
-# @kitforge/ui-native
+# @ymjin/ui-native
 
-React Native components styled with `@kitforge/tokens` via **NativeWind** — the
-native counterpart to `@kitforge/ui` (web). Same `variant`/`size` API; the
+React Native components styled with `@ymjin/tokens` via **NativeWind** — the
+native counterpart to `@ymjin/ui` (web). Same `variant`/`size` API; the
 styling resolves through the **same token Tailwind preset** the web build uses,
 so `bg-primary-500` is the identical value on web and native.
 
@@ -21,15 +21,15 @@ Phase 2 (community-lib wrappers): `Select`, `DatePicker`, `RadioGroup`, `Slider`
 ## Setup
 
 ```bash
-npm i @kitforge/ui-native @kitforge/tokens nativewind react-native
+npm i @ymjin/ui-native @ymjin/tokens nativewind react-native
 ```
 
 ```js
 // tailwind.config.js — layer the kitforge token preset on top of NativeWind
 module.exports = {
-  presets: [require("nativewind/preset"), require("@kitforge/tokens/tailwind")],
+  presets: [require("nativewind/preset"), require("@ymjin/tokens/tailwind")],
   content: [
-    "./node_modules/@kitforge/ui-native/dist/**/*.js",
+    "./node_modules/@ymjin/ui-native/dist/**/*.js",
     "./app/**/*.{tsx,jsx}",
   ],
 };
@@ -39,7 +39,7 @@ Add `nativewind/babel` to your Babel config and import your `global.css`
 (NativeWind v4 setup). Then:
 
 ```tsx
-import { Button, TextField, Switch, Modal } from "@kitforge/ui-native";
+import { Button, TextField, Switch, Modal } from "@ymjin/ui-native";
 
 function Form() {
   const [open, setOpen] = useState(false);
@@ -58,12 +58,12 @@ function Form() {
 
 ## Design notes
 
-- **API parity, native events:** props mirror `@kitforge/ui` (`variant`, `size`),
+- **API parity, native events:** props mirror `@ymjin/ui` (`variant`, `size`),
   but events use RN conventions (`onPress`, `onValueChange`).
 - **Tokens as JS values:** where a class can't apply (RN `trackColor`,
   `placeholderTextColor`, `ActivityIndicator` color), the component imports the
-  token value from `@kitforge/tokens` — still one source of truth.
+  token value from `@ymjin/tokens` — still one source of truth.
 - **Shadows/fonts:** Tailwind shadows map partially on RN; custom fonts must be
   loaded by your app. Phase 1 uses system fonts.
-- **Web stays on `@kitforge/ui`** (React Aria) — best-in-class web a11y; this
+- **Web stays on `@ymjin/ui`** (React Aria) — best-in-class web a11y; this
   package is for React Native only.

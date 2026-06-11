@@ -12,7 +12,7 @@ export default defineConfig({
     "react",
     "react/jsx-runtime",
     "react-native",
-    "@kitforge/tokens",
+    "@ymjin/tokens",
     "nativewind",
     "@react-native-community/slider",
     "@react-native-community/datetimepicker",

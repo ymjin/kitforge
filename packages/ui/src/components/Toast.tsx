@@ -2,7 +2,7 @@
 /**
  * A lightweight toast system. React Aria's toast is still unstable, so this is
  * a small self-contained queue + context + portal — enough for app-level
- * notifications, styled with `@kitforge/tokens`.
+ * notifications, styled with `@ymjin/tokens`.
  */
 
 import {
@@ -111,7 +111,7 @@ export function ToastProvider({ children, duration = 5000 }: ToastProviderProps)
 export function useToast(): ToastContextValue {
   const ctx = useContext(ToastContext);
   if (!ctx) {
-    throw new Error("[@kitforge/ui] useToast must be used inside a <ToastProvider>.");
+    throw new Error("[@ymjin/ui] useToast must be used inside a <ToastProvider>.");
   }
   return ctx;
 }

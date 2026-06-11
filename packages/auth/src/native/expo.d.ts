@@ -1,6 +1,6 @@
 /**
  * Minimal ambient declarations for the Expo auth packages this entry uses, so
- * `@kitforge/auth/native` type-checks and emits declarations without taking a
+ * `@ymjin/auth/native` type-checks and emits declarations without taking a
  * hard dependency on the Expo toolchain. The consumer installs the real
  * packages; these only cover the surface we touch.
  */

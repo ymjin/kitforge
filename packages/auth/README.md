@@ -1,10 +1,10 @@
-# @kitforge/auth
+# @ymjin/auth
 
 Framework-agnostic social-login (OAuth 2.0 + PKCE) core for kitforge.
 
 - **Today:** Google
 - **Next:** Kakao, Naver, then Apple
-- **Adapters (planned):** `@kitforge/auth/next`, `@kitforge/auth/react`
+- **Adapters (planned):** `@ymjin/auth/next`, `@ymjin/auth/react`
 
 ## Design
 
@@ -32,8 +32,8 @@ and rely on PKCE.
 ## Usage (low-level core)
 
 ```ts
-import { createAuthorizationUrl, exchangeCode, getUserInfo } from "@kitforge/auth";
-import { Google } from "@kitforge/auth/providers";
+import { createAuthorizationUrl, exchangeCode, getUserInfo } from "@ymjin/auth";
+import { Google } from "@ymjin/auth/providers";
 
 const google = Google({
   clientId: process.env.GOOGLE_CLIENT_ID!,

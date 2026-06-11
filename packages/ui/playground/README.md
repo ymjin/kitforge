@@ -1,6 +1,6 @@
-# @kitforge/ui · Playground
+# @ymjin/ui · Playground
 
-A browser gallery of all `@kitforge/ui` components, for visual checking.
+A browser gallery of all `@ymjin/ui` components, for visual checking.
 
 ## Run
 
@@ -22,8 +22,8 @@ python3 -m http.server 5173 --directory playground
 ```
 
 `main.tsx` imports the built library from `../dist/index.js` and its
-`../dist/styles.css`. Component colors come from `@kitforge/tokens` CSS
+`../dist/styles.css`. Component colors come from `@ymjin/tokens` CSS
 variables; the stylesheet ships fallback values, so the gallery looks correct
-even without `@kitforge/tokens/css` loaded.
+even without `@ymjin/tokens/css` loaded.
 
 `out/` is generated and git-ignored.

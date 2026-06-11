@@ -1,6 +1,6 @@
 # CLAUDE.md — kitforge conventions
 
-A monorepo of independently published `@kitforge/*` libraries (web + React
+A monorepo of independently published `@ymjin/*` libraries (web + React
 Native). This file is the working guide; see `docs/decisions/` for the "why".
 
 ## Layout

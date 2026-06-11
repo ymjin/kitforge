@@ -5,7 +5,7 @@
  *
  * @example
  * ```ts
- * import { NaverMaps } from "@kitforge/maps/providers";
+ * import { NaverMaps } from "@ymjin/maps/providers";
  * const naver = NaverMaps({ ncpKeyId: import.meta.env.VITE_NAVER_MAP_KEY });
  * ```
  *
@@ -42,7 +42,7 @@ export interface NaverMapsOptions {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function nmaps(): any {
   const n = (globalThis as any).naver;
-  if (!n?.maps) throw new Error("[@kitforge/maps] Naver Maps SDK not loaded. Call provider.load() first.");
+  if (!n?.maps) throw new Error("[@ymjin/maps] Naver Maps SDK not loaded. Call provider.load() first.");
   return n.maps;
 }
 

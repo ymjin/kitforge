@@ -1,7 +1,7 @@
 # kitforge
 
 A personal, reusable toolkit — a monorepo of independently published
-`@kitforge/*` packages so any project can pull in just the parts it needs while
+`@ymjin/*` packages so any project can pull in just the parts it needs while
 sharing **one source of truth** (design tokens). Every package works on the web;
 most have a React Native counterpart for Expo apps.
 
@@ -9,22 +9,22 @@ most have a React Native counterpart for Expo apps.
 
 | Package | What it is | Web | React Native |
 |---------|-----------|:---:|:---:|
-| [`@kitforge/tokens`](packages/tokens) | Design tokens (color, spacing, border, typography, shadow) → TS, CSS vars, Tailwind preset | ✅ | ✅ (JS values + preset) |
-| [`@kitforge/ui`](packages/ui) | 31 accessible React components (React Aria + tokens) | ✅ | — |
-| [`@kitforge/ui-native`](packages/ui-native) | 13 React Native components (NativeWind + tokens) | — | ✅ |
-| [`@kitforge/auth`](packages/auth) | Social login (Google·Kakao·Naver·Apple) + node/next/react/native adapters | ✅ | ✅ `/native` |
-| [`@kitforge/storage`](packages/storage) | Object storage over GCS·S3·Naver·Supabase·local | ✅ | ✅ |
-| [`@kitforge/maps`](packages/maps) | One map API over Google + Naver (web) / Google + Apple (native) | ✅ | ✅ `/native` |
+| [`@ymjin/tokens`](packages/tokens) | Design tokens (color, spacing, border, typography, shadow) → TS, CSS vars, Tailwind preset | ✅ | ✅ (JS values + preset) |
+| [`@ymjin/ui`](packages/ui) | 31 accessible React components (React Aria + tokens) | ✅ | — |
+| [`@ymjin/ui-native`](packages/ui-native) | 13 React Native components (NativeWind + tokens) | — | ✅ |
+| [`@ymjin/auth`](packages/auth) | Social login (Google·Kakao·Naver·Apple) + node/next/react/native adapters | ✅ | ✅ `/native` |
+| [`@ymjin/storage`](packages/storage) | Object storage over GCS·S3·Naver·Supabase·local | ✅ | ✅ |
+| [`@ymjin/maps`](packages/maps) | One map API over Google + Naver (web) / Google + Apple (native) | ✅ | ✅ `/native` |
 
 ## Install only what you need
 
 ```bash
-npm i @kitforge/tokens                                   # design tokens
-npm i @kitforge/tokens @kitforge/ui                      # web components
-npm i @kitforge/tokens @kitforge/ui-native nativewind    # React Native components
-npm i @kitforge/auth                                     # social login
-npm i @kitforge/storage                                  # object storage
-npm i @kitforge/maps                                     # maps
+npm i @ymjin/tokens                                   # design tokens
+npm i @ymjin/tokens @ymjin/ui                      # web components
+npm i @ymjin/tokens @ymjin/ui-native nativewind    # React Native components
+npm i @ymjin/auth                                     # social login
+npm i @ymjin/storage                                  # object storage
+npm i @ymjin/maps                                     # maps
 ```
 
 Each package's README has full setup + usage. Tokens are the shared foundation:
@@ -51,7 +51,7 @@ Versioning and changelogs are handled by [Changesets](https://github.com/changes
 2. **`pnpm changeset version`** — consumes those files, bumps `package.json`
    versions, and appends to each package's `CHANGELOG.md` (the release history).
 3. **`pnpm changeset publish`** — publishes the changed packages to the public
-   npm registry (`@kitforge` scope) and creates git tags.
+   npm registry (`@ymjin` scope) and creates git tags.
 
 ```bash
 pnpm changeset            # author a changeset for your change

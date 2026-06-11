@@ -1,6 +1,6 @@
 import RNSlider from "@react-native-community/slider";
 import { Text, View } from "react-native";
-import { color } from "@kitforge/tokens";
+import { color } from "@ymjin/tokens";
 import { cx } from "../utils/cx.js";
 
 export interface SliderProps {
@@ -18,7 +18,7 @@ export interface SliderProps {
 
 /**
  * A range slider wrapping `@react-native-community/slider`, tinted with
- * `@kitforge/tokens` colors. Requires that package as a peer dependency.
+ * `@ymjin/tokens` colors. Requires that package as a peer dependency.
  */
 export function Slider({
   value,
