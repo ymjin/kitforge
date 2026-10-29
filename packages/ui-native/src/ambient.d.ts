@@ -27,7 +27,9 @@ declare module "react-native" {
   }
   export const View: ComponentType<ViewProps>;
 
-  export interface TextProps extends Styled {}
+  export interface TextProps extends Styled {
+    accessibilityRole?: string;
+  }
   export const Text: ComponentType<TextProps>;
 
   export interface PressableProps extends Styled {
@@ -36,6 +38,8 @@ declare module "react-native" {
     accessibilityRole?: string;
     accessibilityState?: Record<string, boolean | undefined>;
     accessibilityLabel?: string;
+    accessible?: boolean;
+    accessibilityViewIsModal?: boolean;
   }
   export const Pressable: ComponentType<PressableProps>;
 
