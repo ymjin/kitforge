@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  entry: ["src/index.ts"],
+  entry: ["src/index.ts", "src/slider.ts", "src/date-picker.ts"],
   format: ["esm", "cjs"],
   dts: true,
   clean: true,
@@ -11,6 +11,7 @@ export default defineConfig({
   external: [
     "react",
     "react/jsx-runtime",
+    "nativewind/jsx-runtime",
     "react-native",
     "@ymjin/tokens",
     "nativewind",
