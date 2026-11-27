@@ -10,9 +10,10 @@ packages/
   tokens      design tokens → TS, CSS vars, Tailwind preset (single source)
   ui          web components (React Aria + tokens)
   ui-native   RN components (NativeWind + tokens)
-  auth        social login + node/next/react/native adapters
+  auth        social login (Google/Kakao/Naver/Apple/NaverWorks) + node/next/react/native/vercel adapters
   storage     object storage (GCS/S3/Naver/Supabase/local)
   maps        Google+Naver (web) / Google+Apple (native)
+  naver-works Naver Works OAuth token mgmt + Drive API (Node only, token store via adapter)
 ```
 
 ## Commands

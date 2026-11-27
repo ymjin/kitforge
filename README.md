@@ -12,9 +12,10 @@ most have a React Native counterpart for Expo apps.
 | [`@ymjin/tokens`](packages/tokens) | Design tokens (color, spacing, border, typography, shadow) → TS, CSS vars, Tailwind preset | ✅ | ✅ (JS values + preset) |
 | [`@ymjin/ui`](packages/ui) | 31 accessible React components (React Aria + tokens) | ✅ | — |
 | [`@ymjin/ui-native`](packages/ui-native) | 13 React Native components (NativeWind + tokens) | — | ✅ |
-| [`@ymjin/auth`](packages/auth) | Social login (Google·Kakao·Naver·Apple) + node/next/react/native adapters | ✅ | ✅ `/native` |
+| [`@ymjin/auth`](packages/auth) | Social login (Google·Kakao·Naver·Apple·Naver Works) + node/next/react/native/vercel adapters | ✅ | ✅ `/native` |
 | [`@ymjin/storage`](packages/storage) | Object storage over GCS·S3·Naver·Supabase·local | ✅ | ✅ |
 | [`@ymjin/maps`](packages/maps) | One map API over Google + Naver (web) / Google + Apple (native) | ✅ | ✅ `/native` |
+| [`@ymjin/naver-works`](packages/naver-works) | Naver Works (LINE WORKS) OAuth token management + Drive API | ✅ (Node) | — |
 
 ## Install only what you need
 
@@ -25,6 +26,7 @@ npm i @ymjin/tokens @ymjin/ui-native nativewind    # React Native components
 npm i @ymjin/auth                                     # social login
 npm i @ymjin/storage                                  # object storage
 npm i @ymjin/maps                                     # maps
+npm i @ymjin/naver-works                              # Naver Works token + Drive (Node)
 ```
 
 Each package's README has full setup + usage. Tokens are the shared foundation:
