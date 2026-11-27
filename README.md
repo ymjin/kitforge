@@ -9,6 +9,7 @@ most have a React Native counterpart for Expo apps.
 
 | Package | What it is | Web | React Native |
 |---------|-----------|:---:|:---:|
+| [`@ymjin/core`](packages/core) | Platform-neutral utils — KST date, number/won, rate limit (pluggable store), id | ✅ | ✅ |
 | [`@ymjin/tokens`](packages/tokens) | Design tokens (color, spacing, border, typography, shadow) → TS, CSS vars, Tailwind preset | ✅ | ✅ (JS values + preset) |
 | [`@ymjin/ui`](packages/ui) | 31 accessible React components (React Aria + tokens) | ✅ | — |
 | [`@ymjin/ui-native`](packages/ui-native) | 13 React Native components (NativeWind + tokens) | — | ✅ |
@@ -19,6 +20,7 @@ most have a React Native counterpart for Expo apps.
 ## Install only what you need
 
 ```bash
+npm i @ymjin/core                                     # KST date · number · rate limit · id
 npm i @ymjin/tokens                                   # design tokens
 npm i @ymjin/tokens @ymjin/ui                      # web components
 npm i @ymjin/tokens @ymjin/ui-native nativewind    # React Native components

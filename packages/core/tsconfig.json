@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    // Platform-neutral: no ambient @types (no Node globals). The DOM lib from
+    // the base config supplies Request/Headers/crypto typings only.
+    "types": []
+  },
+  "include": ["src"],
+  "exclude": ["dist", "node_modules", "src/**/*.test.ts"]
+}

@@ -7,6 +7,7 @@ Native). This file is the working guide; see `docs/decisions/` for the "why".
 
 ```
 packages/
+  core        platform-neutral utils: KST date, number/won, rate limit, id (no Node/Intl)
   tokens      design tokens → TS, CSS vars, Tailwind preset (single source)
   ui          web components (React Aria + tokens)
   ui-native   RN components (NativeWind + tokens)
