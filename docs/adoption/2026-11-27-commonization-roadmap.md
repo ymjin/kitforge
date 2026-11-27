@@ -14,6 +14,30 @@
 - 순수 TS 패키지(`@ymjin/core` 등)는 W 단계에 만들되 RN에서 깨지지 않게(Intl만 · Node 전용 API 금지) 설계하고, RN 앱 **적용**은 N 단계에서 한다.
 - perk_step `packages/domain`처럼 웹·모바일이 함께 쓰는 공유 패키지를 W 단계에 바꾸면, mobile은 **타입체크·단위 테스트만** 확인하고 기기 확인은 N 단계로 미룬다.
 
+## 진행 원칙 2: 키트 선행 · 서비스 1회 반영 (2026-11-27 결정)
+
+서비스 쪽 변경을 최소로 하려고 **웹 단계 패키지를 kitforge에서 먼저 모두 끝내고 한 번에 발행한 뒤, 서비스마다 PR 하나로 반영**한다.
+패키지별로 서비스를 건드리면 7개 서비스에 5번씩, 35번이 되기 때문이다.
+
+1. **shim 방식** — 서비스의 기존 파일(`lib/format.ts` 등)은 경로와 export 이름을 그대로 두고 **본문만 키트 호출로 바꾼다.** 호출부는 바뀌지 않는다.
+   예: 공방은 `formatKstDate = (v) => formatKst(v, "yyyy. M. d.")`처럼 정의해 지금 화면 출력을 유지한다.
+2. **DB 어댑터는 키트가 제공한다** — Firestore · Neon/postgres SQL 태그 · Supabase · Prisma. 구조적 타입만 써서 키트에 DB SDK 의존성이 생기지 않는다.
+3. **출력이 같은지 키트에서 먼저 검증한다** — 서비스의 현재 구현과 키트 결과를 같은 입력으로 대조하는 테스트를 kitforge에 둔다. 서비스 세션은 그 결과(차이표)를 확인만 한다.
+4. **기존 이름을 유지한다** — review77·dadeum이 쓰는 `gongbangRoute` · `gongbangGuard` · `ok/fail/serverError`, review77의 `LegalDoc` 타입, 공방의 `PushDeps` 구조, perk_step의 `confirmDialog()`를 키트가 같은 이름과 같은 모양으로 제공한다.
+
+### kitforge 선행 작업
+
+| 단계 | 패키지 | 서비스 변경을 줄이기 위해 키트에 넣을 것 | 상태 |
+|---|---|---|---|
+| K1 | `@ymjin/core` 보강 | 레이트 리밋 저장소(`firestoreRateStore` · `sqlRateStore` · `supabaseRateStore`), 서비스 현재 구현과의 출력 대조 테스트 | 진행 중 (PR #4) |
+| K2 | `@ymjin/gongbang` | `gongbangRoute` 등 기존 이름 API, `gongbangKeysFromEnv(prefix)`(기존 env 이름 유지), 표준 엔드포인트 팩토리, Next · Lambda/Express 어댑터, 계약 테스트 `verifyGongbangContract`, 공방용 `createGongbangClient` | |
+| K3 | `@ymjin/push` | `sendToTargets(payload, deps)`(공방 PushDeps 구조), `webPushSender` · `fcmSender`, `isDeadSubscription`, `SendSummary`, `/client` · `/capacitor` | |
+| K4 | `@ymjin/account` | review77 `LegalDoc` 타입 그대로, 웹 렌더러, `ConsentGate`(perk_step API 유지 + 어댑터), 탈퇴 상태기계(순수 함수) | |
+| K5 | `@ymjin/ui` 패턴 | `useConfirm()` + `confirmDialog()`/`<ConfirmHost/>` 둘 다, **토큰 브릿지 CSS**(서비스 브랜드 색 → `@ymjin/tokens` 변수) | |
+| K6 | 기존 패키지 | `@ymjin/maps`가 skill `NaverMapEmbed` 용도를 감당하는지 확인 · 부족하면 보강 | |
+
+K1~K4는 서로 독립적이다. K5는 화면이 바뀌므로 마지막에 하고, 서비스 반영도 선택으로 둔다(공방 관리자 화면부터).
+
 ## 적용 매트릭스
 
 | 패키지 | perk_step | review77 | sigeumseok | skill | ohguohgu | dadeum | gabo-ham | gongbang |
@@ -30,6 +54,8 @@
 ● W 단계 적용 · N 네이티브 단계에서 추가 적용 · ○ 선택(효과 작음) · 빈칸 해당 없음
 
 ---
+
+> 아래 P0~P6 · N0~N4의 패키지별 절은 **원천 코드와 교체 후보 경로 목록(참고용)**이다. 서비스에 실제로 붙여넣는 프롬프트는 맨 아래 「서비스 1회 반영 프롬프트」를 쓴다.
 
 ## P0. kitforge 정리 (선행)
 
@@ -448,9 +474,70 @@ src/utils/noticeDismissal.ts, src/components/NoticePopupModal.tsx. 약관 문구
 
 ---
 
+## 서비스 1회 반영 프롬프트 (W 단계)
+
+K1~K4 패키지가 발행된 뒤, 서비스마다 **아래 프롬프트 하나**로 반영한다. 반영 순서는 위험이 낮은 순서다: gongbang → review77 → dadeum → gabo-ham → perk_step → ohguohgu → skill.
+
+**공통 머리말**
+```
+kitforge 재사용 키트가 발행됐다: @ymjin/core@<버전> · @ymjin/gongbang@<버전> · @ymjin/push@<버전> · @ymjin/account@<버전>.
+이 저장소 CLAUDE.md §24 · docs/workflows/reuse-kit.md ② 절차로 반영하되, **shim 방식**으로 해줘:
+아래 파일은 경로와 export 이름을 그대로 두고 본문만 키트 호출로 바꾼다 — 호출부는 바꾸지 않는다.
+출력 차이는 kitforge docs/adoption/compat/<서비스>.md(키트 대조 테스트 결과)에 정리돼 있다. 차이가 있는 함수는 패턴 인자로 기존 출력을 유지하는 것이 기본이고, 바꾸려면 리포트에서 옵션으로 제시한다.
+순서: 교체 대상 확인 리포트 → 승낙 → 배치 교체 → 기존 테스트 전체 + 변경분 테스트 → ADR · HISTORY · 영향 TC.
+키 값은 지어내지 않는다(env 이름만). 배포 후 handoff/gongbang-deploy 형식으로 배포 핸드오프 작성.
+```
+
+**▶ gongbang**
+```
+[머리말] 본문 교체: lib/format.ts(→ @ymjin/core/date, 기존 toLocale 출력은 formatKst 패턴으로 유지), lib/auth/rate-limit.ts · rate-policy.ts(→ @ymjin/core/rate-limit backoffVerdict · clientIp, 저장은 키트 sqlRateStore 대신 기존 admin_login_attempts 집계 유지 가능),
+lib/services/push.ts(→ @ymjin/push sendToTargets — 기존 PushDeps를 그대로 넘긴다), lib/services/{dadeum,review77}/*의 fetch 호출(→ @ymjin/gongbang createGongbangClient).
+ohguohgu · gabo · perkstep 직접 DB 접속 제거는 이번 범위가 아니다 — 각 서비스가 표준 API를 배포한 뒤 따로 한다.
+```
+
+**▶ review77 (chilchil)**
+```
+[머리말] 본문 교체: src/server/rate-limit.ts(→ createRateLimiter + firestoreRateStore, hashKeys: true — 기존 sha256 키와 같은지 확인. LIMITS 표는 그대로),
+src/server/gongbang-auth.ts · src/server/gongbang.ts의 가드 · gongbangRoute(→ @ymjin/gongbang, 같은 이름), src/content/legal/types.ts(→ @ymjin/account LegalDoc 타입 re-export).
+api/gongbang/* route 파일과 약관 본문(terms.ts · privacy.ts)은 건드리지 않는다.
+```
+
+**▶ dadeum**
+```
+[머리말] 본문 교체: lib/format.ts(→ @ymjin/core/date · number — date-fns 패턴과 같은 formatKst 패턴, fmtRelative는 문구가 달라지므로 옵션 제시),
+lib/services/webpush.ts · fcm.ts · lib/push-errors.ts(→ @ymjin/push webPushSender · fcmSender · isDeadSubscription — 구독 조회 · 정리 SQL은 deps로 그대로),
+lib/services/gongbang/guard.ts(→ @ymjin/gongbang, 같은 이름 · DADEUM_READ_KEY/DADEUM_WRITE_KEY 유지).
+```
+
+**▶ gabo-ham**
+```
+[머리말] 본문 교체: src/lib/utils/format.ts(formatBytes → @ymjin/core/number), src/lib/push/{web-push,fcm,client,capacitor-fcm,subscriptionPolicy}.ts(→ @ymjin/push). notify-family.ts는 그대로.
+신규: src/app/api/gongbang/ 아래 표준 엔드포인트(health · summary · users · push-history)를 @ymjin/gongbang 팩토리로 — route 파일은 한 줄씩, 데이터 함수만 작성.
+familyId 격리 규칙이 관리 API에서도 지켜지는지 TC로 확인. 계약 테스트(verifyGongbangContract) 실행.
+```
+
+**▶ perk_step (web만)**
+```
+[머리말] 본문 교체: packages/domain/src/format.ts(won · shortWon · todaySeoul · formatAmountInput · newId · nowIso · shiftMonth → @ymjin/core re-export, 도메인 함수는 그대로), apps/web/src/lib/rateLimit.ts(→ memoryStore + createRateLimiter, retryAfter · clientKey 이름 유지).
+신규: apps/web에 공방 표준 엔드포인트(health · summary · users)를 @ymjin/gongbang 팩토리로.
+apps/mobile은 코드 수정 없이 타입체크 · 단위 테스트만(기기 확인은 N 단계).
+```
+
+**▶ ohguohgu (server만)**
+```
+[머리말] 본문 교체: server/src/utils/kst.ts · format.ts(→ @ymjin/core/date · number — fmtPoints는 formatNumber로, 함수 이름 유지), server/src/services/pushService.ts의 FCM 발송부(→ @ymjin/push fcmSender — silent push · 버전 규칙은 그대로).
+신규: 공방 표준 엔드포인트(health · summary · users · push-history)를 @ymjin/gongbang Lambda 어댑터로. mobile은 건드리지 않는다(N 단계).
+```
+
+**▶ skill**
+```
+[머리말] 본문 교체: src/app/lib/date.ts(→ @ymjin/core/date). @ymjin/auth 0.3.1 → 0.4.0 업그레이드(P0 프롬프트 참고)도 이번에 함께.
+@ymjin/maps 적용은 K6 확인 결과에 따라 별도.
+```
+
 ## 진행 순서 권장
 
-1. **W 단계**: P0 → P1(가장 작고 영향 넓음) → P3(공방 직접 DB 제거 · 보안 효과) → P2 → P4 → P5 → P6
+1. **W 단계**: kitforge K1~K4(→ K5 · K6) 완료 · 한 번에 발행 → 서비스 1회 반영(gongbang → review77 → dadeum → gabo-ham → perk_step → ohguohgu → skill) → 공방 직접 DB 접속 제거 PR
    **N 단계**: N0(ui-native 0.2.0 실기기) → N1 → N2 → N3 → (N4)
-2. 각 패키지는 **원천 서비스부터** 적용해 회귀를 먼저 잡는다(P3=review77·dadeum, P4=dadeum·gongbang, P5=review77·perk_step·ohguohgu server, N2=ohguohgu mobile).
+2. 키트 대조 테스트로 서비스별 출력 차이를 `docs/adoption/compat/<서비스>.md`에 미리 정리해 두고, 서비스 세션은 그 차이표를 확인만 한다.
 3. 서비스 적용이 끝나면 그 서비스가 `handoff/gongbang-deploy/` 배포 핸드오프를 남기고, 공방 배포 이력에 등록.
