@@ -35,6 +35,21 @@ export function toDate(input: DateInput | null | undefined): Date | null {
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
+/**
+ * 시간대 표기 없는 날짜 · 일시를 **KST 벽시계 시각**으로 읽는다 — `<input type="date">` ·
+ * `<input type="datetime-local">` 값처럼 사용자가 한국 시각으로 입력한 값에 쓴다.
+ * (`toDate`는 같은 문자열을 UTC로 읽는다 — DB가 내준 값용.) 오프셋이 붙어 있으면 그대로 읽는다.
+ * 읽을 수 없으면 `null`.
+ * @example parseKstDateTime("2026-11-03T09:00") // 2026-11-03T00:00:00.000Z
+ */
+export function parseKstDateTime(value: string | null | undefined): Date | null {
+  if (!value) return null;
+  const v = value.trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return toDate(`${v}T00:00:00+09:00`);
+  if (NO_OFFSET_DATETIME.test(v)) return toDate(`${v.replace(" ", "T")}+09:00`);
+  return toDate(v);
+}
+
 export interface KstParts {
   year: number;
   /** 1–12 */

@@ -45,6 +45,7 @@
     "clean": "rm -rf dist .turbo"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.6.0",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2"
   },

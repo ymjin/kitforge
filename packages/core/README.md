@@ -11,7 +11,7 @@ npm i @ymjin/core
 |---|---|
 | `@ymjin/core/date` | KST 표시(`formatKst` 패턴, 프리셋), 날짜 경계(`kstDayRange`), `todayKst`, `daysUntil`, `formatRelative` |
 | `@ymjin/core/number` | `formatNumber`, `won`, `shortWon`, 금액 입력(`formatAmountInput` / `parseAmountInput`), `formatBytes` |
-| `@ymjin/core/rate-limit` | `createRateLimiter` + `RateStore` 어댑터, `memoryStore`, 단계별 대기(`backoffVerdict`), `clientIp` |
+| `@ymjin/core/rate-limit` | `createRateLimiter` + `RateStore`, 저장소 `memoryStore` · `firestoreRateStore` · `sqlRateStore`, 단계별 대기(`backoffVerdict`), `clientIp` |
 | `@ymjin/core/id` | `newId()`(UUID v4, Hermes 대체 경로 포함), `nowIso()` |
 
 루트 `@ymjin/core`에서 모두 가져올 수도 있습니다.
@@ -36,6 +36,7 @@ formatRelative(post.createdAt);                       // "5분 전"
 - 패턴 토큰: `yyyy yy MM M dd d HH H hh h mm m ss s E EEEE a`. 작은따옴표 안의 글자는 그대로 나옵니다(`H'시'`).
 - 시간대 표기 없는 일시(`2026-11-02T15:30:00`)는 **UTC로 읽습니다.** DB가 UTC를 오프셋 없이 줄 때 9시간 어긋나지 않게 하려는 것입니다.
 - 표시 함수는 `null`, `undefined`, 잘못된 값에 `''`를 돌려줍니다.
+- 사용자가 한국 시각으로 입력한 값(`<input type="datetime-local">` 등)은 `parseKstDateTime("2026-11-03T09:00")`으로 읽습니다. 오프셋 없는 문자열을 KST 벽시계 시각으로 해석합니다.
 
 ## number
 
@@ -69,20 +70,22 @@ export async function GET(req: Request) {
 }
 ```
 
+저장소 어댑터는 키트가 제공합니다. DB SDK를 의존성으로 두지 않고 필요한 메서드만 구조적 타입으로 받습니다.
+
 ```ts
-// Firestore 어댑터 예시
-const firestoreStore = (db: Firestore): RateStore => ({
-  increment: (key, windowMs, now) =>
-    db.runTransaction(async (tx) => {
-      const ref = db.collection("rate_limits").doc(key);
-      const d = (await tx.get(ref)).data() as RateWindow | undefined;
-      const w = !d || now - d.windowStart >= windowMs ? { count: 1, windowStart: now } : { count: d.count + 1, windowStart: d.windowStart };
-      tx.set(ref, { ...w, expireAt: new Date(w.windowStart + windowMs) });
-      return w;
-    }),
-});
+import { createRateLimiter, firestoreRateStore, sqlRateStore, rateLimitTableSql } from "@ymjin/core/rate-limit";
+
+// Firestore — 문서 { count, window_start, expire_at } (expire_at에 TTL 정책을 걸면 지난 창이 지워짐)
+const limiter = createRateLimiter({ store: firestoreRateStore(db), hashKeys: true });
+
+// Postgres — 한 문장 upsert로 원자적으로 셉니다. 테이블은 rateLimitTableSql()을 마이그레이션에 넣습니다.
+const sqlStore = sqlRateStore((text, params) => sql.query(text, params));            // Neon
+// sqlRateStore((t, p) => sqlPg.unsafe(t, p))                                        // postgres.js
+// sqlRateStore((t, p) => pool.query(t, p).then((r) => r.rows))                     // pg
+// sqlRateStore((t, p) => prisma.$queryRawUnsafe(t, ...p))                          // Prisma
 ```
 
+- `firestoreRateStore` + `hashKeys: true`의 문서 ID는 review77의 기존 `rate_limits` 키와 같습니다. 바꿔도 기존 창이 이어집니다.
 - `hashKeys: true`로 두면 이메일이나 IP 원문 대신 SHA-256을 저장합니다(Web Crypto 사용).
 - `memoryStore`는 인스턴스 메모리에만 기록합니다. 서버리스에서는 인스턴스마다 따로 세므로, 요청이 한 곳에 몰리는 것을 늦추는 용도로만 쓰세요.
 - 로그인 실패처럼 **잠그지 않고 점점 오래 기다리게** 하려면 `backoffVerdict(fails, lastFailAt, now)`를 씁니다. 기본값은 5회째 1분, 10회째 5분, 15회째 10분, 20회째 이후 1시간입니다. `formatWait(retryAfter)`는 안내 문구용입니다.

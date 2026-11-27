@@ -8,11 +8,13 @@
 
 /**
  * 세 자리마다 콤마. `NaN`·`Infinity`·`null`은 `'0'`.
- * `maxFractionDigits`까지 반올림하고 끝의 0은 지운다.
+ * `maxFractionDigits`(기본 3 — `toLocaleString` 기본값과 같다)까지 반올림하고 끝의 0은 지운다.
+ * 정수만 보여야 하면 `formatNumber(n, 0)` 또는 호출부에서 `Math.trunc`.
  * @example formatNumber(1234567) // "1,234,567"
+ * @example formatNumber(1499.6) // "1,499.6"
  * @example formatNumber(-1234.5678, 2) // "-1,234.57"
  */
-export function formatNumber(n: number | null | undefined, maxFractionDigits = 0): string {
+export function formatNumber(n: number | null | undefined, maxFractionDigits = 3): string {
   if (n == null || !Number.isFinite(n)) return "0";
   const factor = 10 ** maxFractionDigits;
   const rounded = Math.round(Math.abs(n) * factor) / factor;

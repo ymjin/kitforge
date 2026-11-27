@@ -11,6 +11,7 @@ import {
   kstDayRange,
   kstParts,
   kstStartOfDay,
+  parseKstDateTime,
   shiftMonth,
   toDate,
   toKstDateString,
@@ -136,5 +137,21 @@ describe("formatRelative", () => {
   });
   it("returns '' for unreadable input", () => {
     expect(formatRelative(undefined, now)).toBe("");
+  });
+});
+
+describe("parseKstDateTime", () => {
+  it("reads form values as KST wall time", () => {
+    expect(parseKstDateTime("2026-11-03T09:00")!.toISOString()).toBe("2026-11-03T00:00:00.000Z");
+    expect(parseKstDateTime("2026-11-03 09:00:30")!.toISOString()).toBe("2026-11-03T00:00:30.000Z");
+    expect(parseKstDateTime("2026-11-03")!.toISOString()).toBe("2026-11-02T15:00:00.000Z");
+  });
+  it("round-trips with formatKst", () => {
+    expect(formatKst(parseKstDateTime("2026-01-01T00:00"), "yyyy-MM-dd'T'HH:mm")).toBe("2026-01-01T00:00");
+  });
+  it("respects explicit offsets and rejects junk", () => {
+    expect(parseKstDateTime("2026-11-03T09:00:00Z")!.toISOString()).toBe("2026-11-03T09:00:00.000Z");
+    expect(parseKstDateTime("")).toBeNull();
+    expect(parseKstDateTime("nope")).toBeNull();
   });
 });

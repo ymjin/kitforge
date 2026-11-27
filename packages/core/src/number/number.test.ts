@@ -13,10 +13,16 @@ describe("formatNumber", () => {
     expect(formatNumber(1234.5678, 2)).toBe("1,234.57");
     expect(formatNumber(1234.5, 2)).toBe("1,234.5");
     expect(formatNumber(1234.004, 2)).toBe("1,234");
-    expect(formatNumber(1499.6)).toBe("1,500");
+    expect(formatNumber(1499.6, 0)).toBe("1,500");
+  });
+  it("defaults to 3 fraction digits like toLocaleString", () => {
+    expect(formatNumber(1499.6)).toBe("1,499.6");
+    expect(formatNumber(12.34567)).toBe("12.346");
+    expect(formatNumber(-0.4)).toBe("-0.4");
   });
   it("does not print -0", () => {
-    expect(formatNumber(-0.4)).toBe("0");
+    expect(formatNumber(-0.4, 0)).toBe("0");
+    expect(formatNumber(-0.0001)).toBe("0");
   });
   it("maps non-finite and nullish to '0'", () => {
     expect(formatNumber(NaN)).toBe("0");
