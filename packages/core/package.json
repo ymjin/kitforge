@@ -1,0 +1,55 @@
+{
+  "name": "@ymjin/core",
+  "version": "0.0.0",
+  "description": "Platform-neutral utilities for kitforge services — KST date formatting, number/won formatting, rate limiting with pluggable stores, and IDs. No Node or DOM-only APIs, so it runs on Node, browsers, edge, and React Native (Hermes).",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./date": {
+      "types": "./dist/date/index.d.ts",
+      "import": "./dist/date/index.js",
+      "require": "./dist/date/index.cjs"
+    },
+    "./number": {
+      "types": "./dist/number/index.d.ts",
+      "import": "./dist/number/index.js",
+      "require": "./dist/number/index.cjs"
+    },
+    "./rate-limit": {
+      "types": "./dist/rate-limit/index.d.ts",
+      "import": "./dist/rate-limit/index.js",
+      "require": "./dist/rate-limit/index.cjs"
+    },
+    "./id": {
+      "types": "./dist/id/index.d.ts",
+      "import": "./dist/id/index.js",
+      "require": "./dist/id/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.6.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
