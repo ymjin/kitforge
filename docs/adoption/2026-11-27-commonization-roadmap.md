@@ -5,19 +5,29 @@
 > 모든 서비스에 `docs/workflows/reuse-kit.md`(CLAUDE.md §24)가 있으므로 프롬프트는 그 ②「기존 코드 교체」 게이트(스캔 → 파일별 리포트 → 승낙 → 배치 교체 + 변경분 테스트 → ADR·TC)를 그대로 탄다.
 > `<버전>`은 발행 후 실제 버전으로 바꿔 넣는다. 파일 경로는 2026-11-27 기준 실측(ohguohgu·dadeum·gabo-ham·gongbang은 GitHub 최신 커밋 기준).
 
+## 진행 원칙: web → native (2026-11-27 결정)
+
+지원 서비스 8개 중 웹·서버가 대부분이라 **웹(W) 단계를 먼저 끝내고 네이티브(N) 단계로 넘어간다.**
+
+- **W 단계**: Next·Vite 웹, Node 서버(ohguohgu `server/` 포함), Capacitor로 감싼 PWA(dadeum·gabo-ham — 웹 코드)
+- **N 단계**: Expo RN 앱 — ohguohgu `mobile/`, perk_step `apps/mobile/` · `@ymjin/ui-native` 확장 · 실기기(EAS) 확인
+- 순수 TS 패키지(`@ymjin/core` 등)는 W 단계에 만들되 RN에서 깨지지 않게(Intl만 · Node 전용 API 금지) 설계하고, RN 앱 **적용**은 N 단계에서 한다.
+- perk_step `packages/domain`처럼 웹·모바일이 함께 쓰는 공유 패키지를 W 단계에 바꾸면, mobile은 **타입체크·단위 테스트만** 확인하고 기기 확인은 N 단계로 미룬다.
+
 ## 적용 매트릭스
 
 | 패키지 | perk_step | review77 | sigeumseok | skill | ohguohgu | dadeum | gabo-ham | gongbang |
 |---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | P0 kitforge 정리 (auth 0.4.0 · 잣대 표) | | | | ● | | | | |
-| P1 `@ymjin/core` | ● | ● | | ○ | ● | ● | ● | ● |
+| P1 `@ymjin/core` | ●(web) N | ● | | ○ | ●(server) N | ● | ● | ● |
 | P2 `@ymjin/push` | | | | | ●(server) | ● | ● | ● |
 | P3 `@ymjin/gongbang` | ● | ● | | ○ | ● | ● | ● | ●(client) |
-| P4 `@ymjin/ui` · `ui-native` 확장 | ● | ● | ○ | ○ | ●(native) | ● | ● | ● |
-| P5 `@ymjin/account` | ● | ● | | ● | ● | ● | ● | |
+| P4 `@ymjin/ui` 확장 | ●(web) | ● | ○ | ○ | | ● | ● | ● |
+| P5 `@ymjin/account` | ●(web) N | ● | | ● | ●(server) N | ● | ● | |
+| **N 단계** (RN 앱) | N | | | | N | | | |
 | P6 기존 패키지 (maps · storage) | | | | ● | | | ● | |
 
-● 적용 · ○ 선택(효과 작음) · 빈칸 해당 없음
+● W 단계 적용 · N 네이티브 단계에서 추가 적용 · ○ 선택(효과 작음) · 빈칸 해당 없음
 
 ---
 
@@ -26,7 +36,7 @@
 **kitforge 작업**
 1. 미커밋 `@ymjin/auth` 0.4.0 변경분 + `packages/naver-works/` 커밋 → changeset → 발행.
 2. `CLAUDE.md` Layout에 naver-works 추가.
-3. `@ymjin/ui-native` 설치 함정 근본 수정: `jsxImportSource: nativewind` 빌드 · datetimepicker/slider 지연 import (잣대 reuse-kit.md에 기록된 perk_step 실측 함정).
+3. `@ymjin/ui-native` 설치 함정 근본 수정: `jsxImportSource: nativewind` 빌드 · datetimepicker/slider 서브패스 분리 (잣대 reuse-kit.md에 기록된 perk_step 실측 함정). → 코드는 PR #3에 포함, **실기기 확인과 perk_step 적용은 N0**.
 4. 이후 패키지가 나올 때마다 **잣대(jatdae) reuse-kit 표**에 행 추가 — 서비스들은 템플릿 반입으로 표를 받는다.
 
 **▶ 잣대(jatdae) 세션 프롬프트** — 새 패키지 발행 때마다
@@ -73,6 +83,7 @@ kitforge에 @ymjin/core@<버전>이 발행됐다(format: KST 날짜·숫자·원
 apps/web/src/lib/format.ts, apps/web/src/lib/rateLimit.ts(retryAfter·clientKey).
 cardOptionLabel·shiftMonth·monthLabel 같은 도메인 함수는 packages/domain에 남긴다.
 web·mobile 둘 다 domain을 거쳐 쓰므로 domain이 @ymjin/core를 re-export하는 방식(A)과 직접 import(B)를 비교해 리포트.
+이번은 웹 단계 — apps/web과 packages/domain만 바꾸고, apps/mobile은 코드 수정 없이 타입체크·단위 테스트만 돌려 깨지지 않는지 확인. mobile 기기 확인은 네이티브 단계로 미룬다.
 ```
 
 **▶ review77 (chilchil)**
@@ -84,10 +95,9 @@ LIMITS 표와 Firestore 저장은 이 저장소에 남기고, 창 계산·키 �
 
 **▶ ohguohgu**
 ```
-[머리말] 교체 후보: server/src/utils/format.ts, server/src/utils/kst.ts, mobile/src/utils/format.ts, mobile/src/utils/kst.ts.
-fmtPoints·fmtPointsWithUnit·toPointDigits·fmtPointInput 같은 포인트 전용 함수는 남긴다.
-mobile은 Expo RN 57 — @ymjin/core가 Intl만 쓰는지(Hermes Intl 지원 범위) 확인하고, 안 맞는 함수는 리포트에 표기.
-server(Prisma)와 mobile 양쪽 테스트(vitest · jest-expo) 변경분 실행.
+[머리말] 이번은 웹·서버 단계 — server만 대상: server/src/utils/format.ts, server/src/utils/kst.ts.
+mobile(src/utils/format.ts · kst.ts)은 네이티브 단계에서 따로 한다 — 이번엔 건드리지 않는다.
+server 변경분 테스트(vitest) 실행.
 ```
 
 **▶ dadeum**
@@ -150,7 +160,7 @@ notify-family.ts(가족 단위 대상 선정)는 남기고 내부 발송만 키�
 ```
 [머리말] 서버만 대상: server/src/services/pushService.ts(sendPush·sendPushWithLog·sendSilentPush), pushHealthService.ts.
 silent push·최소 앱 버전(SILENT_PUSH_MIN_APP_VERSION) 같은 오구오구 전용 규칙은 남기고 FCM 발송·만료 토큰 처리만 키트로.
-mobile(@react-native-firebase)은 이번 범위 밖 — 리포트에 「후속」으로만 적는다.
+mobile(@react-native-firebase)은 네이티브 단계(N4) — 이번엔 건드리지 않는다.
 ```
 
 **▶ gongbang**
@@ -227,7 +237,7 @@ ohguohgu·gabo·perkstep은 각 서비스가 표준 API를 노출한 뒤(서비�
 
 ---
 
-## P4. `@ymjin/ui` · `@ymjin/ui-native` 확장 — 화면 패턴
+## P4. `@ymjin/ui` 확장 — 웹 화면 패턴 (RN은 N2)
 
 **kitforge 작업**
 - `@ymjin/ui` 추가(웹, React Aria + tokens):
@@ -235,15 +245,12 @@ ohguohgu·gabo·perkstep은 각 서비스가 표준 API를 노출한 뒤(서비�
   - `EmptyState`, `PageHeader`, `SectionTitle`, `SegmentedToggle`, `SearchInput`, `BottomSheet` — 원천: dadeum `components/common/*`
   - `AdminShell` + `Sidebar`, `FilterBar`, `DataTable`(Table + Pagination + 필터) — 원천: gongbang `components/layout/*`, `components/common/{FilterBar,Table}.tsx`
   - PWA: `PushPermissionBanner`, `AddToHomeCard` — 원천: gabo-ham `src/components/common/*`
-- `@ymjin/ui-native` 추가(RN):
-  - `DialogHost` + `useDialog()`, `ToastHost` + `useToast()`, `EmptyState`, `BottomSheet`, `SheetHeader`, `FormFooter` — 원천: ohguohgu `mobile/src/components/{GlobalDialog,GlobalToast,ModalDialogHost,EmptyState,SheetHeader,FormFooter}.tsx`·`store/use{Dialog,Toast}Store.ts`, perk_step `apps/mobile/src/components/{ConfirmDialog,Toast}.tsx`
-- 웹·RN **같은 prop API**(ADR-0003) 유지.
+- prop API는 나중에 N2에서 ui-native가 같은 이름·같은 props로 따라올 수 있게 정한다(ADR-0003).
 
 **공통 프롬프트 머리말**
 ```
-kitforge @ymjin/ui@<버전> · @ymjin/ui-native@<버전>에 화면 패턴 컴포넌트가 추가됐다
-(웹: ConfirmProvider/useConfirm · EmptyState · PageHeader · SegmentedToggle · SearchInput · BottomSheet · AdminShell/Sidebar · FilterBar · DataTable · PushPermissionBanner · AddToHomeCard /
- RN: DialogHost/useDialog · ToastHost/useToast · EmptyState · BottomSheet · SheetHeader · FormFooter).
+kitforge @ymjin/ui@<버전>에 웹 화면 패턴 컴포넌트가 추가됐다
+(ConfirmProvider/useConfirm · EmptyState · PageHeader · SegmentedToggle · SearchInput · BottomSheet · AdminShell/Sidebar · FilterBar · DataTable · PushPermissionBanner · AddToHomeCard).
 CLAUDE.md §24 · reuse-kit.md ② 절차 + §16 디자인 정합. 토큰이 @ymjin/tokens와 다르면 먼저 토큰 정합 리포트.
 화면 단위로 배치를 나눠 승낙받고, 배치마다 스크린샷 전/후 비교와 변경분 테스트(E2E 포함) 실행. 전수 자동 교체 금지.
 ```
@@ -272,19 +279,10 @@ src/components/auth/SignupSuccessModals.tsx. @ymjin/tokens 미사용 — 토큰 
 화면 곳곳의 확인창·빈 상태를 키트 ConfirmProvider·EmptyState로 바꿀 후보를 리포트해줘.
 ```
 
-**▶ perk_step** — 웹·모바일
+**▶ perk_step** — 웹만
 ```
-[머리말] web: apps/web/src/components/{ConfirmDialog,Toast}.tsx → @ymjin/ui ConfirmProvider·Toast, *Sheet.tsx → BottomSheet.
-mobile: apps/mobile/src/components/{ConfirmDialog,Toast}.tsx → @ymjin/ui-native DialogHost·ToastHost, *Sheet.tsx → BottomSheet.
-ui-native를 <버전>으로 올릴 때 reuse-kit.md 「ui-native 설치 함정」 중 키트에서 고쳐진 항목(jsx-runtime·지연 import)이 있으면 Metro 우회 설정 제거도 후보로.
-```
-
-**▶ ohguohgu** — RN (원천)
-```
-[머리말] mobile만 대상. 교체 후보: src/components/{GlobalDialog,ModalDialogHost,CenterDialog,GlobalToast,EmptyState,SheetHeader,FormFooter}.tsx,
-src/store/use{Dialog,Toast}Store.ts, src/utils/{confirmLogout,modalPresence}.ts.
-현재 NativeWind가 아니라 StyleSheet(*.styles.ts) 기반 — @ymjin/ui-native(NativeWind) 도입 비용·위험을 먼저 리포트하고,
-도입 안 함(보류) 옵션도 함께 제시. My* 래퍼 컴포넌트(MyButton·MyInput·MySwitch·MyText)는 키트로 대체 가능한 범위만 표기.
+[머리말] apps/web만 대상: src/components/{ConfirmDialog,Toast}.tsx → @ymjin/ui ConfirmProvider·Toast, *Sheet.tsx → BottomSheet.
+apps/mobile은 네이티브 단계에서 따로 한다.
 ```
 
 **▶ sigeumseok** (선택)
@@ -304,7 +302,7 @@ src/store/use{Dialog,Toast}Store.ts, src/utils/{confirmLogout,modalPresence}.ts.
 ## P5. `@ymjin/account` — 약관 · 동의 · 탈퇴 · 공지 팝업
 
 **kitforge 작업** (인증 방식은 서비스마다 다르므로 **인증 위의 계정 흐름만**)
-- `legal`: 약관/개인정보 문서 모델(`LegalDoc { kind, version, effectiveAt, sections }`), 버전 비교, 렌더러(`@ymjin/account/react` · `/native`). 원천: review77 `src/content/legal/{types,terms,privacy}.ts`·`src/screens/legal.tsx`.
+- `legal`: 약관/개인정보 문서 모델(`LegalDoc { kind, version, effectiveAt, sections }`), 버전 비교, 렌더러(`@ymjin/account/react` — W 단계, `/native` — N3). 원천: review77 `src/content/legal/{types,terms,privacy}.ts`·`src/screens/legal.tsx`.
 - `consent`: `ConsentGate`(필수 동의 버전이 올라가면 재동의) + 저장 어댑터. 원천: perk_step `apps/web/src/components/ConsentGate.tsx`·`apps/mobile/src/lib/useConsent.ts`·`packages/domain/src/privacy.ts`.
 - `withdrawal`: 탈퇴 요청 → 유예 기간 → 철회/확정 상태기계 + 삭제 계획 훅. 원천: ohguohgu `server/src/handlers/{withdraw,withdrawal_cancel,process_withdrawals}.ts`, gabo-ham `src/lib/family/accountDeletePlan.ts`.
 - `notice`: 공지 팝업 「오늘 하루 안 보기 / 다시 안 보기」 판정. 원천: ohguohgu `mobile/src/utils/noticeDismissal.ts`.
@@ -325,14 +323,15 @@ src/server/account.ts · src/server/actions/account.ts의 탈퇴 흐름.
 
 **▶ perk_step** (consent 원천)
 ```
-[머리말] 교체 후보: apps/web/src/components/ConsentGate.tsx, apps/mobile/src/lib/useConsent.ts, packages/domain/src/privacy.ts,
-apps/{web,mobile}의 privacy 페이지, packages/sync/src/account.ts · apps/*/src/lib/account.ts · AccountPanel.tsx의 탈퇴 부분.
+[머리말] 이번은 웹 단계 — 교체 후보: apps/web/src/components/ConsentGate.tsx, packages/domain/src/privacy.ts, apps/web의 privacy 페이지,
+packages/sync/src/account.ts · apps/web/src/lib/account.ts · apps/web/src/components/AccountPanel.tsx의 탈퇴 부분.
+apps/mobile(useConsent · privacy · AccountPanel)은 네이티브 단계 — 공유 패키지(domain · sync)를 바꾸면 mobile은 타입체크·단위 테스트만 확인.
 ```
 
 **▶ ohguohgu** (withdrawal · notice 원천)
 ```
-[머리말] 교체 후보: server/src/handlers/{withdraw,withdrawal_cancel,process_withdrawals}.ts(상태기계만 키트로, Prisma 삭제는 어댑터),
-mobile/src/components/WithdrawalModal.tsx, mobile/src/screens/{AccountSettingsScreen,LegalScreen}.tsx, mobile/src/utils/noticeDismissal.ts, NoticePopupModal.tsx.
+[머리말] 이번은 서버 단계 — 교체 후보: server/src/handlers/{withdraw,withdrawal_cancel,process_withdrawals}.ts(상태기계만 키트로, Prisma 삭제는 어댑터).
+mobile(WithdrawalModal · AccountSettingsScreen · LegalScreen · noticeDismissal · NoticePopupModal)은 네이티브 단계.
 ```
 
 **▶ dadeum**
@@ -371,8 +370,87 @@ nas-connector 게이트웨이 서명 규격이 바뀌지 않는지 리포트에 
 
 ---
 
+## N 단계 — 네이티브 (W 단계가 끝난 뒤)
+
+### N0. ui-native 0.2.0 실기기 확인 (PR #3 후속)
+
+**▶ perk_step** — ui-native 0.2.0 발행 후
+```
+@ymjin/ui-native가 0.2.0으로 올라갔다 — 빌드가 nativewind/jsx-runtime을 쓰고, Slider·DatePicker가 서브패스(/slider · /date-picker)로 빠졌다.
+CLAUDE.md §24 · reuse-kit.md 절차로 apps/mobile을 업그레이드해줘:
+① apps/mobile/metro.config.js의 jsx-runtime resolveRequest 우회(「키트가 jsxImportSource nativewind로 빌드되면 지운다」 주석 부분) 제거
+② 키트 Slider·DatePicker를 쓰지 않으면 @react-native-community/{slider,datetimepicker}가 키트 때문에만 필요한지 확인(PhotoEditor·DateField가 직접 쓰므로 유지일 가능성)
+③ 웹(react-native-web) 실행 + EAS 개발 빌드에서 키트 Button·Modal·Select·TextField·Badge의 className 스타일이 그대로인지 스크린샷 전/후 비교.
+기기 확인은 내가 해야 하는 단계면 체크리스트로 남겨줘. reuse-kit.md 「ui-native 설치 함정」 ①②④ 항목 갱신안도 정리.
+```
+
+### N1. `@ymjin/core`를 RN 앱에 적용
+
+**▶ ohguohgu (mobile)**
+```
+@ymjin/core@<버전>(KST 날짜·숫자 포맷)을 mobile에 적용한다. server는 웹 단계에서 이미 적용됐다.
+CLAUDE.md §24 · reuse-kit.md ② 절차. 교체 후보: mobile/src/utils/format.ts, mobile/src/utils/kst.ts, hooks/useKstDayChange.ts의 날짜 계산.
+fmtPoints·fmtPointsWithUnit·toPointDigits·fmtPointInput 같은 포인트 전용 함수는 남긴다.
+Expo RN 57 Hermes의 Intl(timeZone: Asia/Seoul, ko-KR) 출력이 기존과 같은지 jest-expo 테스트 + 실기기 스크린샷으로 확인.
+```
+
+**▶ perk_step (mobile)**
+```
+packages/domain이 웹 단계에서 @ymjin/core를 쓰도록 바뀌었다. apps/mobile에서 금액·날짜 표시가 기존과 같은지
+Hermes Intl 기준으로 확인하고(단위 테스트 + EAS 개발 빌드 스크린샷), 다른 점이 있으면 리포트해줘.
+```
+
+### N2. `@ymjin/ui-native` 확장 — RN 화면 패턴
+
+**kitforge 작업**
+- `DialogHost` + `useDialog()`, `ToastHost` + `useToast()`, `EmptyState`, `BottomSheet`, `SheetHeader`, `FormFooter` — 원천: ohguohgu `mobile/src/components/{GlobalDialog,GlobalToast,ModalDialogHost,EmptyState,SheetHeader,FormFooter}.tsx`·`store/use{Dialog,Toast}Store.ts`, perk_step `apps/mobile/src/components/{ConfirmDialog,Toast}.tsx`
+- P4에서 정한 웹 `@ymjin/ui` 이름·props를 그대로 따른다(ADR-0003).
+
+**공통 프롬프트 머리말**
+```
+kitforge @ymjin/ui-native@<버전>에 RN 화면 패턴 컴포넌트가 추가됐다(DialogHost/useDialog · ToastHost/useToast · EmptyState · BottomSheet · SheetHeader · FormFooter).
+CLAUDE.md §24 · reuse-kit.md ② 절차 + §16 디자인 정합. 화면 단위 배치로 승낙받고, 배치마다 실기기(또는 EAS 개발 빌드) 스크린샷 전/후 비교와 변경분 테스트. 전수 자동 교체 금지.
+```
+
+**▶ perk_step (mobile)**
+```
+[머리말] apps/mobile/src/components/{ConfirmDialog,Toast}.tsx → @ymjin/ui-native DialogHost·ToastHost, *Sheet.tsx → BottomSheet.
+Metro jsx-runtime 우회 제거는 N0에서 끝났다 — 남아 있으면 리포트에 표기.
+```
+
+**▶ ohguohgu (mobile)** (원천)
+```
+[머리말] mobile만 대상. 교체 후보: src/components/{GlobalDialog,ModalDialogHost,CenterDialog,GlobalToast,EmptyState,SheetHeader,FormFooter}.tsx,
+src/store/use{Dialog,Toast}Store.ts, src/utils/{confirmLogout,modalPresence}.ts.
+현재 NativeWind가 아니라 StyleSheet(*.styles.ts) 기반 — @ymjin/ui-native(NativeWind) 도입 비용·위험을 먼저 리포트하고,
+도입 안 함(보류) 옵션도 함께 제시. My* 래퍼 컴포넌트(MyButton·MyInput·MySwitch·MyText)는 키트로 대체 가능한 범위만 표기.
+```
+
+### N3. `@ymjin/account` 네이티브 렌더러 · 동의 · 탈퇴 화면
+
+**▶ perk_step (mobile)**
+```
+@ymjin/account@<버전>의 /native(LegalDoc 렌더러 · ConsentGate)를 apps/mobile에 적용한다. 웹은 이미 적용됐다.
+CLAUDE.md §24 · reuse-kit.md ② 절차. 교체 후보: apps/mobile/src/lib/useConsent.ts, apps/mobile/src/app/privacy.tsx, apps/mobile/src/components/AccountPanel.tsx의 탈퇴 부분.
+약관 문구는 바꾸지 않는다 — 전/후 텍스트 diff 0 확인.
+```
+
+**▶ ohguohgu (mobile)**
+```
+@ymjin/account@<버전>의 /native를 mobile에 적용한다. server의 탈퇴 상태기계는 이미 키트로 바뀌었다.
+CLAUDE.md §24 · reuse-kit.md ② 절차. 교체 후보: src/components/WithdrawalModal.tsx, src/screens/{AccountSettingsScreen,LegalScreen}.tsx,
+src/utils/noticeDismissal.ts, src/components/NoticePopupModal.tsx. 약관 문구 diff 0 · 탈퇴 유예/철회 화면 흐름이 server 상태와 맞는지 TC로 확인.
+```
+
+### N4. `@ymjin/push/native` (선택)
+
+**kitforge 작업**: `@react-native-firebase/messaging` 기반 토큰 등록·갱신·권한 헬퍼. 원천: ohguohgu `mobile/src/services/{fcm,pushToken,pushRuntime}.ts`. 다른 RN 앱이 푸시를 쓰기 시작할 때만 진행.
+
+---
+
 ## 진행 순서 권장
 
-1. P0 → P1(가장 작고 영향 넓음) → P3(공방 직접 DB 제거 · 보안 효과) → P2 → P4 → P5 → P6
-2. 각 패키지는 **원천 서비스부터** 적용해 회귀를 먼저 잡는다(P3=review77·dadeum, P4=dadeum·gongbang·ohguohgu, P5=review77·perk_step·ohguohgu).
+1. **W 단계**: P0 → P1(가장 작고 영향 넓음) → P3(공방 직접 DB 제거 · 보안 효과) → P2 → P4 → P5 → P6
+   **N 단계**: N0(ui-native 0.2.0 실기기) → N1 → N2 → N3 → (N4)
+2. 각 패키지는 **원천 서비스부터** 적용해 회귀를 먼저 잡는다(P3=review77·dadeum, P4=dadeum·gongbang, P5=review77·perk_step·ohguohgu server, N2=ohguohgu mobile).
 3. 서비스 적용이 끝나면 그 서비스가 `handoff/gongbang-deploy/` 배포 핸드오프를 남기고, 공방 배포 이력에 등록.
