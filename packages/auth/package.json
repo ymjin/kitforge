@@ -1,7 +1,7 @@
 {
   "name": "@ymjin/auth",
-  "version": "0.1.0",
-  "description": "Framework-agnostic social-login (OAuth 2.0) core for kitforge — Google today; Apple, Kakao, and Naver next.",
+  "version": "0.4.0",
+  "description": "Framework-agnostic social-login (OAuth 2.0) for kitforge — Google, Kakao, Naver, Apple.",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -44,7 +44,12 @@
       "import": "./dist/adapters/index.js",
       "require": "./dist/adapters/index.cjs"
     },
-    "./adapters/schema.sql": "./dist/adapters/schema.sql"
+    "./adapters/schema.sql": "./dist/adapters/schema.sql",
+    "./vercel": {
+      "types": "./dist/vercel/index.d.ts",
+      "import": "./dist/vercel/index.js",
+      "require": "./dist/vercel/index.cjs"
+    }
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

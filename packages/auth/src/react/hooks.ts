@@ -5,7 +5,7 @@
  * All hooks must be used inside a <KitforgeProvider>.
  */
 
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useKitforgeContext, type SessionStatus } from "./context.js";
 import type { Session } from "../node/types.js";
 
@@ -73,6 +73,17 @@ export function useSignIn() {
 
 // ── useSignOut ────────────────────────────────────────────────────────────
 
+export interface DeleteAccountOptions {
+  /** Where to navigate after account deletion. Default: `"/"` */
+  redirectTo?: string;
+}
+
+export interface UseDeleteAccountResult {
+  deleteAccount: (options?: DeleteAccountOptions) => Promise<void>;
+  isLoading: boolean;
+  error: string | null;
+}
+
 export interface SignOutOptions {
   /** Where to navigate after sign-out. Default: `"/"` */
   redirectTo?: string;
@@ -109,4 +120,53 @@ export function useSignOut() {
     },
     [basePath, update],
   );
+}
+
+// ── useDeleteAccount ──────────────────────────────────────────────────────
+
+/**
+ * Returns a `deleteAccount()` function that:
+ * 1. POSTs to `{basePath}/account/delete` — triggers server-side cleanup.
+ * 2. Clears the session cookie (server sets `Set-Cookie: Max-Age=0`).
+ * 3. Navigates to `redirectTo` (default `"/"`).
+ *
+ * ```tsx
+ * const { deleteAccount, isLoading, error } = useDeleteAccount();
+ *
+ * async function handleDelete() {
+ *   if (!confirm("정말 탈퇴하시겠습니까?")) return;
+ *   await deleteAccount({ redirectTo: "/" });
+ * }
+ * ```
+ */
+export function useDeleteAccount(): UseDeleteAccountResult {
+  const { basePath, update } = useKitforgeContext();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const deleteAccount = useCallback(
+    async (options?: DeleteAccountOptions) => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const res = await fetch(`${basePath}/account/delete`, {
+          method: "POST",
+          credentials: "include",
+        });
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error((body as { error?: string }).error ?? `HTTP ${res.status}`);
+        }
+        await update();
+        window.location.href = options?.redirectTo ?? "/";
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        setError(msg);
+        setIsLoading(false);
+      }
+    },
+    [basePath, update],
+  );
+
+  return { deleteAccount, isLoading, error };
 }

@@ -11,6 +11,7 @@ export default defineConfig({
     "src/react/index.ts",
     "src/native/index.ts",
     "src/adapters/index.ts",
+    "src/vercel/index.ts",
   ],
   // context.tsx contains JSX — tsup/esbuild handles .tsx automatically.
   // React, Next, and the Expo packages are peer deps and must NOT be bundled.

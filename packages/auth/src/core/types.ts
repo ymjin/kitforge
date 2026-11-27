@@ -68,6 +68,16 @@ export interface OAuthProvider {
   token: {
     url: string;
   };
+  /**
+   * OIDC RP-Initiated Logout endpoint (`end_session_endpoint`).
+   * Present only for providers that support terminating the IdP session.
+   * Used by `POST /auth/signout?federated=1`.
+   */
+  endSession?: {
+    url: string;
+    /** Extra static params merged into the logout request. */
+    params?: Record<string, string>;
+  };
   userinfo: {
     /**
      * REST endpoint to fetch the user profile. Omit for providers (Apple)
@@ -120,6 +130,43 @@ export interface Session {
 }
 
 // ---------------------------------------------------------------------------
+// Webhooks
+// ---------------------------------------------------------------------------
+
+export type WebhookEventName =
+  | "account.created"  // first sign-in (new user)
+  | "account.updated"  // returning sign-in — profile may have changed
+  | "account.deleted"; // account deletion
+
+/** Snapshot of the user embedded in every webhook payload. */
+export interface WebhookUser {
+  id:        string;
+  provider:  string;
+  email?:    string;
+  name?:     string;
+  avatarUrl?: string;
+}
+
+/** The JSON body posted to each webhook URL. */
+export interface WebhookEvent {
+  event:     WebhookEventName;
+  userId:    string;
+  user:      WebhookUser;
+  /** ISO-8601 timestamp of when the event was fired. */
+  timestamp: string;
+}
+
+/** Persisted when a webhook delivery fails, for admin review. */
+export interface WebhookFailure {
+  event:     WebhookEventName;
+  userId:    string;
+  user:      WebhookUser;
+  targetUrl: string;
+  error:     string;
+  failedAt:  string;
+}
+
+// ---------------------------------------------------------------------------
 // External storage — DB adapter (user/account persistence)
 // ---------------------------------------------------------------------------
 
@@ -163,8 +210,38 @@ export interface AuthAdapter {
   linkAccount(userId: string, account: AdapterAccount): Promise<void>;
   /** Fetch a user by internal id, or null. */
   getUser(id: string): Promise<AdapterUser | null>;
+  /**
+   * Fetch the stored provider account (with its tokens) for a user.
+   * Used by federated sign-out to read the `id_token` for `id_token_hint`.
+   * Optional — when omitted, federated sign-out falls back to a local sign-out.
+   */
+  getAccount?(userId: string, provider: string): Promise<AdapterAccount | null>;
   /** Patch mutable fields on a user; returns the updated record. */
   updateUser(id: string, data: Partial<Omit<AdapterUser, "id">>): Promise<AdapterUser>;
+  /**
+   * Called on every successful sign-in (new and returning users).
+   * Use this to sync the latest provider profile to a separate app-level table
+   * (e.g. `profiles`). Optional — implement only when needed.
+   */
+  syncProfile?(userId: string, profile: NormalizedProfile): Promise<void>;
+  /**
+   * Delete all auth data for a user (kf_users row + linked accounts + sessions).
+   * Called by the `POST /auth/account/delete` endpoint before session invalidation.
+   * Implement when you need custom deletion logic beyond the default cascade.
+   */
+  deleteAccount?(userId: string): Promise<void>;
+  /**
+   * Persist a webhook delivery failure for admin review.
+   * Called automatically when a webhook POST fails.
+   * Optional — when omitted, failures are only logged to stderr.
+   */
+  logWebhookFailure?(failure: WebhookFailure): Promise<void>;
+  /**
+   * Shallow liveness check used by `GET /auth/health`.
+   * Should verify DB connectivity with a cheap query (e.g. `SELECT 1`).
+   * Optional — when omitted, the health endpoint reports no DB check.
+   */
+  ping?(): Promise<void>;
 }
 
 // ---------------------------------------------------------------------------
