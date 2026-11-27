@@ -74,7 +74,7 @@ function fakeFirestore() {
 }
 
 describe("firestoreRateStore", () => {
-  it("writes review77-compatible fields and counts per window", async () => {
+  it("writes { count, window_start, expire_at } and counts per window", async () => {
     const db = fakeFirestore();
     const s = firestoreRateStore(db);
     await s.increment("abc", 60_000, 1_000);
@@ -83,7 +83,7 @@ describe("firestoreRateStore", () => {
     expect(await s.increment("abc", 60_000, 61_000)).toEqual({ count: 1, windowStart: 61_000 });
   });
 
-  it("continues an existing review77 document", async () => {
+  it("continues an existing rate_limits document", async () => {
     const db = fakeFirestore();
     db.docs.set("rate_limits/k", { count: 4, window_start: 500, expire_at: new Date(60_500) });
     expect(await firestoreRateStore(db).increment("k", 60_000, 1_000)).toEqual({ count: 5, windowStart: 500 });

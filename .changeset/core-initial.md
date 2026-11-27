@@ -9,4 +9,3 @@
 - `rate-limit`: `createRateLimiter` + `RateStore` 어댑터(`memoryStore` · `firestoreRateStore` · `sqlRateStore`), `hashKeys`(SHA-256), 단계별 대기 `backoffVerdict`, `clientIp`(Fetch Request와 Node 헤더 모두 지원).
 - `id`: `newId`(UUID v4, Hermes 대체 경로 포함), `nowIso`.
 
-원천: gongbang · perk_step · dadeum · ohguohgu · review77 · gabo-ham의 중복 구현.

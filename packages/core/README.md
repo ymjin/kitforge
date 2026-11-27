@@ -85,7 +85,7 @@ const sqlStore = sqlRateStore((text, params) => sql.query(text, params));       
 // sqlRateStore((t, p) => prisma.$queryRawUnsafe(t, ...p))                          // Prisma
 ```
 
-- `firestoreRateStore` + `hashKeys: true`의 문서 ID는 review77의 기존 `rate_limits` 키와 같습니다. 바꿔도 기존 창이 이어집니다.
+- `firestoreRateStore` + `hashKeys: true`의 문서 ID는 `sha256("<name>:<subject 소문자·trim>")`입니다. 같은 규칙으로 키를 만들던 기존 `rate_limits` 문서는 그대로 이어집니다.
 - `hashKeys: true`로 두면 이메일이나 IP 원문 대신 SHA-256을 저장합니다(Web Crypto 사용).
 - `memoryStore`는 인스턴스 메모리에만 기록합니다. 서버리스에서는 인스턴스마다 따로 세므로, 요청이 한 곳에 몰리는 것을 늦추는 용도로만 쓰세요.
 - 로그인 실패처럼 **잠그지 않고 점점 오래 기다리게** 하려면 `backoffVerdict(fails, lastFailAt, now)`를 씁니다. 기본값은 5회째 1분, 10회째 5분, 15회째 10분, 20회째 이후 1시간입니다. `formatWait(retryAfter)`는 안내 문구용입니다.
