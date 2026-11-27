@@ -1,0 +1,45 @@
+{
+  "name": "@ymjin/naver-works",
+  "version": "0.1.1",
+  "description": "Naver Works (LINE WORKS) OAuth token management and Drive API for kitforge.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./token": {
+      "types": "./dist/token/index.d.ts",
+      "import": "./dist/token/index.js",
+      "require": "./dist/token/index.cjs"
+    },
+    "./drive": {
+      "types": "./dist/drive/index.d.ts",
+      "import": "./dist/drive/index.js",
+      "require": "./dist/drive/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.42",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

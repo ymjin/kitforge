@@ -124,3 +124,11 @@ declare module "@react-native-community/datetimepicker" {
   const DateTimePicker: ComponentType<DateTimePickerProps>;
   export default DateTimePicker;
 }
+
+// tsconfig sets `jsxImportSource: "nativewind"` so the build emits
+// `nativewind/jsx-runtime` (→ react-native-css-interop) and `className` on kit
+// components turns into styles without a Metro runtime redirect. NativeWind
+// isn't installed here; its runtime has React's exact signature.
+declare module "nativewind/jsx-runtime" {
+  export * from "react/jsx-runtime";
+}

@@ -28,7 +28,8 @@
  * ```
  *
  * Phase 1: Button, TextField, Switch, Checkbox, Modal, Badge, Card, Spinner.
- * Phase 2: RadioGroup, Select, Slider, DatePicker, Toast.
+ * Phase 2: RadioGroup, Select, Toast — plus Slider / DatePicker on subpaths
+ * (`/slider`, `/date-picker`) because their community libs are optional peers.
  */
 
 export { Button } from "./components/Button.js";
@@ -62,11 +63,9 @@ export type { RadioGroupProps, RadioProps } from "./components/RadioGroup.js";
 export { Select } from "./components/Select.js";
 export type { SelectProps, SelectOption } from "./components/Select.js";
 
-export { Slider } from "./components/Slider.js";
-export type { SliderProps } from "./components/Slider.js";
-
-export { DatePicker } from "./components/DatePicker.js";
-export type { DatePickerProps } from "./components/DatePicker.js";
+// Slider / DatePicker wrap optional peers, so they live on their own
+// subpaths (`@ymjin/ui-native/slider`, `@ymjin/ui-native/date-picker`) —
+// importing the main entry never pulls in an uninstalled community lib.
 
 export { ToastProvider, useToast } from "./components/Toast.js";
 export type { ToastProviderProps, ToastOptions, ToastVariant } from "./components/Toast.js";

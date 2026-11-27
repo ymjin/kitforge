@@ -25,12 +25,21 @@ export { InMemoryAdapter, InMemorySessionStore } from "./memory.js";
 export {
   SupabaseAdapter,
   SupabaseSessionStore,
+  checkSchema,
 } from "./supabase.js";
 export type {
   SupabaseClientLike,
   SupabaseAdapterOptions,
   SupabaseSessionStoreOptions,
+  CheckSchemaOptions,
+  SchemaIssue,
 } from "./supabase.js";
+export { NeonAdapter, NeonSessionStore } from "./neon.js";
+export type {
+  NeonSqlClient,
+  NeonAdapterOptions,
+  NeonSessionStoreOptions,
+} from "./neon.js";
 
 // Re-export the contracts so `@ymjin/auth/adapters` is self-contained.
 export type {

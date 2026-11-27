@@ -16,7 +16,17 @@ so `bg-primary-500` is the identical value on web and native.
 | `Modal` | RN `Modal` | dimmed backdrop, tap-to-close |
 | `Badge` / `Card` (+ Header/Body/Footer) / `Spinner` | `View`/`Text`/`ActivityIndicator` | display |
 
-Phase 2 (community-lib wrappers): `Select`, `DatePicker`, `RadioGroup`, `Slider`, `Toast`.
+Phase 2 (community-lib wrappers): `Select`, `RadioGroup`, `Toast` from the main
+entry, plus two components on **subpaths** because their libraries are optional
+peers — install the peer only if you use the component:
+
+```tsx
+import { Slider } from "@ymjin/ui-native/slider";           // needs @react-native-community/slider
+import { DatePicker } from "@ymjin/ui-native/date-picker";  // needs @react-native-community/datetimepicker
+```
+
+The build emits `nativewind/jsx-runtime`, so kit components' `className`
+works with no Metro `resolveRequest` override.
 
 ## Setup
 

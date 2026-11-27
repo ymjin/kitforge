@@ -1,5 +1,81 @@
 # @ymjin/auth
 
+## 0.3.1
+
+### Patch Changes
+
+- NeonSqlClient 인터페이스 타입 호환성 수정 — NeonQueryFunction 할당 가능하도록 첫 번째 파라미터를 any로 변경
+
+## 0.3.0
+
+### Minor Changes
+
+- NeonAdapter + webhook 지원 추가
+
+  - `NeonAdapter` / `NeonSessionStore` — `@neondatabase/serverless` 기반 Postgres 어댑터 (`@ymjin/auth/adapters`에서 export)
+  - `neon-schema.sql` — Neon용 스키마 (`kf_webhook_failures` 테이블 포함)
+  - `webhooks` 설정 — `account.created` / `account.updated` / `account.deleted` 이벤트를 HMAC-SHA256 서명과 함께 POST
+  - `AuthAdapter.logWebhookFailure()` — webhook 실패 시 DB 기록용 선택적 메서드
+  - `account.deleted` webhook 실패 시 사용자에게 관리자 문의 안내 응답 반환
+
+## 0.2.1
+
+### Patch Changes
+
+- OAuth state/pkce/provider 쿠키 SameSite=None으로 변경 + path="/" 명시
+
+  - Apple Sign In의 form_post 콜백(cross-site POST)에서 state/pkce 쿠키가 전송되지 않아 "State mismatch" 오류가 발생하는 버그 수정
+  - HTTPS 환경에서 SameSite=None;Secure 사용, HTTP(로컬)는 SameSite=Lax 유지
+  - path="/" 명시 — 브라우저가 기본 경로(/auth/signin)로 제한하는 상황 방지
+
+## 0.2.0
+
+### Minor Changes
+
+- 회원 탈퇴(계정 삭제) 지원 추가
+
+  - `POST {basePath}/account/delete` 엔드포인트: 현재 세션 사용자의 인증 데이터(kf_users, kf_accounts, kf_sessions) 삭제 + 세션 쿠키 무효화
+  - `AuthAdapter.deleteAccount(userId)` 메서드 (선택 구현)
+  - `SupabaseAdapter`: `deleteAccount` 구현 — kf_users 삭제 시 ON DELETE CASCADE로 연관 행 자동 정리
+  - `KitforgeAuthConfig.onDeleteAccount(userId)` 훅: 서비스별 후처리 주입 (예: profiles 테이블 삭제)
+  - `useDeleteAccount()` React 훅: `{ deleteAccount, isLoading, error }` 반환
+
+## 0.1.6
+
+### Patch Changes
+
+- README 전면 개편: 공유 인증 서버 패턴, KitforgeProvider basePath 설정, AWS Lambda 어댑터, React SPA / Next.js / Vercel 사용법, Supabase 어댑터 및 스키마 가이드 추가
+
+## 0.1.5
+
+### Patch Changes
+
+- add cookieDomain option for SSO across subdomains
+
+## 0.1.4
+
+### Patch Changes
+
+- add CORS support, cross-origin redirectTo, multi-tenant allowedOrigins
+
+## 0.1.3
+
+### Patch Changes
+
+- fix SupabaseSessionStore user_id
+
+## 0.1.2
+
+### Patch Changes
+
+- fix schema.sql columns, add checkSchema validation helper
+
+## 0.1.1
+
+### Patch Changes
+
+- add Vercel adapter, Supabase profiles upsert, fix session path matching
+
 ## 0.1.0
 
 ### Minor Changes

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "noEmit": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "jsxImportSource": "nativewind"
   },
   "include": ["src", "tsup.config.ts"],
   "exclude": ["dist", "node_modules"]

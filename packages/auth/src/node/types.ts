@@ -10,6 +10,7 @@ import type {
   NormalizedProfile,
   OAuthProvider,
   SessionStore,
+  WebhookEventName,
 } from "../core/types.js";
 
 // Re-export so consumers can import session types from the adapter entry too.
@@ -59,6 +60,78 @@ export interface KitforgeAuthConfig {
    * the user, prefer `adapter` — it also feeds the session `user.id`.
    */
   onSignIn?: (profile: NormalizedProfile) => Promise<void> | void;
+  /**
+   * Called during account deletion, before the user's auth data is wiped.
+   * Use this to clean up service-specific rows (e.g. a `profiles` table).
+   *
+   * @example
+   * ```ts
+   * onDeleteAccount: async (userId) => {
+   *   await supabase.from("profiles").delete().eq("id", userId);
+   * }
+   * ```
+   */
+  onDeleteAccount?: (userId: string) => Promise<void> | void;
+  /**
+   * Origins allowed to make cross-origin requests to this auth server
+   * (CORS). Include every app domain that will call `/session` or `/signout`
+   * via `fetch`. Exact string match — no wildcards.
+   *
+   * When running on the same origin as the app, leave this unset.
+   *
+   * @example ["https://skill.aira.kr", "https://app.aira.kr"]
+   */
+  allowedOrigins?: string[];
+  /**
+   * Cookie domain for SSO across subdomains.
+   * Set to `".aira.kr"` to share the session cookie across all `*.aira.kr` apps.
+   * When omitted, the cookie is scoped to the auth server's own domain only.
+   *
+   * @example ".aira.kr"
+   */
+  cookieDomain?: string;
+  /**
+   * URI prefixes allowed as `redirectTo` after sign-in. Prevents open-redirect
+   * attacks. When `redirectTo` is passed to `/signin/:provider`, it must start
+   * with one of these values (or be a relative path).
+   *
+   * Tip: list your app origins here, e.g. `["https://skill.aira.kr"]`.
+   * Relative paths (`/dashboard`) are always allowed without a whitelist.
+   *
+   * @example ["https://skill.aira.kr", "https://app.aira.kr"]
+   */
+  allowedRedirectUris?: string[];
+  /**
+   * Webhook configuration. When set, auth events are POSTed to each URL
+   * with an HMAC-SHA256 signature for verification.
+   *
+   * Events fired:
+   * - `account.created` — first sign-in (new user created)
+   * - `account.updated` — returning sign-in (profile may have changed)
+   * - `account.deleted` — account deletion
+   *
+   * @example
+   * ```ts
+   * webhooks: {
+   *   urls:   (process.env.WEBHOOK_URLS ?? "").split(",").filter(Boolean),
+   *   secret: process.env.WEBHOOK_SECRET!,
+   * }
+   * ```
+   */
+  webhooks?: {
+    /** One or more HTTPS URLs to deliver events to. */
+    urls: string[];
+    /**
+     * Shared secret used to sign the request body with HMAC-SHA256.
+     * Verify on the receiving end with `X-Kitforge-Signature` header.
+     */
+    secret: string;
+    /**
+     * Subset of events to fire. Omit (or pass all three) to enable everything.
+     * @default ["account.created", "account.updated", "account.deleted"]
+     */
+    events?: WebhookEventName[];
+  };
   /**
    * Optional database adapter. When set, each sign-in upserts a user + links
    * the provider account, and the session `user.id` becomes your DB id.

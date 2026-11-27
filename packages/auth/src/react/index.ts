@@ -80,8 +80,8 @@ export type {
 } from "./context.js";
 
 // Hooks
-export { useSession, useSignIn, useSignOut } from "./hooks.js";
-export type { UseSessionResult, SignInOptions, SignOutOptions } from "./hooks.js";
+export { useSession, useSignIn, useSignOut, useDeleteAccount } from "./hooks.js";
+export type { UseSessionResult, SignInOptions, SignOutOptions, DeleteAccountOptions, UseDeleteAccountResult } from "./hooks.js";
 
 // Re-export Session type so consumers don't need to import from core
 export type { Session } from "../node/types.js";
